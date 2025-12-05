@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="eyebrow">Dark-mode gaming gear</p>
+      <h1>Assemble your dream rig</h1>
+      <p class="lede">Instant filters, compatibility-aware PC builder, and live pricing on a cyberpunk-inspired interface.</p>
+      <div class="hero__actions">
+        <button class="btn btn-primary" id="cta-shop">Shop hardware</button>
+        <button class="btn btn-ghost" id="cta-builder">Start PC builder</button>
+      </div>
+    </div>
+    <div class="hero__glow"></div>
+  </header>
+
+  <main>
+    <section class="grid" id="shop-section">
+      <aside class="filters">
+        <div class="filters__header">
+          <h2>Filters</h2>
+          <label class="select-inline">
+            <span>Category</span>
+            <select id="category-select"></select>
+          </label>
+        </div>
+        <div id="filter-groups" class="filter-groups"></div>
+      </aside>
+      <section class="products">
+        <div class="products__header">
+          <div>
+            <p class="eyebrow">Instant faceted search</p>
+            <h2>Results</h2>
+          </div>
+          <div class="active-filters" id="active-filters"></div>
+        </div>
+        <div id="skeletons" class="skeleton-grid hidden"></div>
+        <div id="product-grid" class="product-grid"></div>
+      </section>
+    </section>
+
+    <section class="builder" id="builder-section">
+      <div class="builder__header">
+        <p class="eyebrow">Compatibility-aware</p>
+        <h2>Custom PC Builder</h2>
+        <p class="lede">Guided selections with socket, RAM type, clearance, and wattage checks. Progress and total price update live.</p>
+      </div>
+      <div class="builder__layout">
+        <div class="builder__steps" id="builder-steps"></div>
+        <div class="builder__side">
+          <div class="progress">
+            <div class="progress__label"><span id="progress-count">0/0</span><span id="progress-text">Start selecting parts</span></div>
+            <div class="progress__bar"><span id="progress-bar"></span></div>
+          </div>
+          <div class="totals" id="totals"></div>
+          <button class="btn btn-primary full-build" id="add-build">Add full build to cart</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3>Cart</h3>
+      <button id="close-cart" aria-label="Close cart">×</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-drawer__footer">
+      <div class="cart-total"><span>Subtotal</span><span id="cart-total">$0</span></div>
+      <button class="btn btn-primary">Checkout</button>
+    </div>
+  </div>
+  <div id="cart-backdrop" class="cart-backdrop"></div>
+
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>
