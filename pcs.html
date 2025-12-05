@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop • Prebuilt PC's</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header site-header--mega">
+    <div class="logo">PC-Webshop</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a class="active" href="pcs.html">PC's</a>
+      <a href="forms.html">Forums</a>
+      <a class="pill" href="builder.html">PC Builder</a>
+    </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek prebuilt" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-cart aria-label="Winkelmand">
+        🛒
+        <span class="badge badge--pill" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">👤</button>
+      <a id="admin-link" class="pill pill--subtle" href="admin.html" style="display:none">Admin</a>
+    </div>
+  </header>
+  <div class="header-ribbon">
+    <span class="chip">Uitgelicht</span>
+    <span class="chip">Raytracing</span>
+    <span class="chip">Waterkoeling</span>
+    <span class="chip">Budget & eSports</span>
+  </div>
+
+  <header class="hero hero--slim">
+    <div class="hero__content">
+      <p class="eyebrow">Prebuilt PC's</p>
+      <h1>Curated rigs, direct klaar</h1>
+      <p class="lede">Elke build is getest, krijgt een thema-afbeelding en kan als homepage spotlight gekozen worden.</p>
+      <div class="hero__actions">
+        <a class="btn btn-primary" href="#prebuilt-grid">Bekijk builds</a>
+        <a class="btn btn-ghost" href="admin.html">CMS / Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="prebuilt-page">
+    <section class="prebuilt-spotlight" data-animate>
+      <div class="spotlight-image" id="prebuilt-feature-image"></div>
+      <div class="spotlight-copy">
+        <p class="eyebrow">Homepage highlight</p>
+        <h2 id="prebuilt-feature-title">Neon 4K rig</h2>
+        <p class="lede" id="prebuilt-feature-subtitle">Past bij de hero card en kan live gewisseld worden vanuit admin.</p>
+        <div class="tag-row" id="prebuilt-feature-badges"></div>
+        <div class="price-row">
+          <span class="price" id="prebuilt-feature-price">€ 3.299</span>
+          <a class="btn btn-primary" href="#prebuilt-grid">Shop deze build</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="prebuilt-grid" id="prebuilt-grid" data-animate>
+      <!-- cards injected -->
+    </section>
+  </main>
+
+  <div class="modal" id="auth-modal"></div>
+  <div class="modal" id="profile-modal"></div>
+  <div class="modal" id="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3>Winkelmand</h3>
+      <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-drawer__footer">
+      <div>
+        <div class="mono">Totaal</div>
+        <div class="price" id="cart-total">€0</div>
+      </div>
+      <button class="btn btn-primary" data-requires-auth="checkout">Afrekenen</button>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+
+  <footer class="footer">
+    <div>PC-Webshop • Dark-mode gear store</div>
+    <div class="tag-row">
+      <span class="chip">Prebuilt</span>
+      <span class="chip">Custom</span>
+      <span class="chip">CMS</span>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>

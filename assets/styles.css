@@ -86,6 +86,8 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
 }
 
 .glow-card__footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+.glow-card--photo { position: relative; overflow: hidden; }
+.glow-card__image { width: 100%; height: 180px; background-size: cover; background-position: center; border-radius: 12px; margin-bottom: 12px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
 
 .hero__content { max-width: 900px; position: relative; z-index: 2; }
 
@@ -334,7 +336,7 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
 .hero--xl { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: center; gap: 40px; padding: 64px 24px 80px; max-width: 1280px; margin: 0 auto; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
 .hero--slim { max-width: 1280px; margin: 0 auto; padding: 36px 24px 32px; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
 
-.hero__visual { position: relative; }
+.hero__visual { position: relative; background-size: cover; background-position: center; border-radius: 18px; }
 .glow-card { background: linear-gradient(135deg, rgba(0, 198, 255, 0.12), rgba(138, 255, 0, 0.08)), var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
 .glow-card .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
 .glow-card .tag-row { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
@@ -595,6 +597,21 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
   display: grid;
   gap: 10px;
 }
+
+.prebuilt-grid { margin: 40px 0; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,0.02); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+.prebuilt-grid__header { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+.prebuilt-grid__items { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.prebuilt-card { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--card); display: grid; }
+.prebuilt-card--featured { border-color: var(--accent-2); box-shadow: 0 15px 40px rgba(0,198,255,0.18); }
+.prebuilt-card__image { height: 180px; background-size: cover; background-position: center; }
+.prebuilt-card__body { padding: 14px; display: grid; gap: 8px; }
+.prebuilt-card__title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.prebuilt-card .spec-line { list-style: none; padding: 0; margin: 0; }
+.spec-line { display: grid; gap: 6px; padding-left: 16px; color: var(--muted); }
+
+.prebuilt-spotlight { display: grid; grid-template-columns: minmax(300px, 1fr) 1fr; gap: 20px; align-items: center; margin: 40px 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, rgba(0,198,255,0.12), rgba(138,255,0,0.08)); }
+.spotlight-image { min-height: 280px; background-size: cover; background-position: center; }
+.spotlight-copy { padding: 20px; display: grid; gap: 10px; }
 
 .profile-banner {
   display: grid;
@@ -1502,6 +1519,32 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
 
   .auth-tab-content { display: none; }
   .auth-tab-content.active { display: block; }
+
+  .auth-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .auth-visual {
+    background: radial-gradient(circle at 20% 20%, rgba(0,198,255,0.2), transparent 40%),
+      radial-gradient(circle at 80% 0%, rgba(138,255,0,0.18), transparent 45%), var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+
+  .auth-demo {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    display: grid;
+    gap: 6px;
+    border: 1px dashed var(--border);
+  }
 
   .form-success {
     padding: 12px;

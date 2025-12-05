@@ -16,6 +16,7 @@
       <a class="active" href="index.html">Home</a>
       <a href="news.html">Tech nieuws</a>
       <a href="catalog.html">Producten</a>
+      <a href="pcs.html">PC's</a>
       <a href="forms.html">Forums</a>
       <a class="pill" href="builder.html">PC Builder</a>
     </nav>
@@ -31,6 +32,7 @@
       <button class="icon-btn" data-open-profile aria-label="Profiel">
         👤
       </button>
+      <a id="admin-link" class="pill pill--subtle" href="admin.html" style="display:none">Admin</a>
     </div>
   </header>
   <div class="header-ribbon">
@@ -45,11 +47,11 @@
       <div class="hero__scanlines"></div>
       <div class="hero__content" data-animate>
         <p class="eyebrow">Dark-mode gaming gear</p>
-        <h1>Assemble your droomrig</h1>
-        <p class="lede">Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.</p>
+        <h1 id="home-hero-title">Assemble your droomrig</h1>
+        <p class="lede" id="home-hero-subtitle">Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.</p>
         <div class="hero__actions">
-          <a class="btn btn-primary" href="builder.html">Start PC builder</a>
-          <a class="btn btn-ghost" href="catalog.html">Shop hardware</a>
+          <a class="btn btn-primary" id="home-hero-cta-primary" href="builder.html">Start PC builder</a>
+          <a class="btn btn-ghost" id="home-hero-cta-secondary" href="catalog.html">Shop hardware</a>
         </div>
         <div class="hero__meta">
           <span>Live compatibiliteit</span>
@@ -63,19 +65,20 @@
           <div>Tweakers-waardige specs</div>
         </div>
       </div>
-      <div class="hero__visual" data-animate>
-        <div class="glow-card">
-          <p class="eyebrow">Nieuw</p>
-          <h3>4K Gaming ready</h3>
-          <p class="lede">RTX 4090 + 7800X3D build</p>
-          <div class="tag-row">
+      <div class="hero__visual" id="home-hero-visual" data-animate>
+        <div class="glow-card glow-card--photo">
+          <div class="glow-card__image" id="home-hero-card-image"></div>
+          <p class="eyebrow" id="home-hero-card-badge">Nieuw</p>
+          <h3 id="home-hero-card-title">4K Gaming ready</h3>
+          <p class="lede" id="home-hero-card-subtitle">RTX 4090 + 7800X3D build</p>
+          <div class="tag-row" id="home-hero-card-tags">
             <span class="chip">GPU 450W</span>
             <span class="chip">DDR5</span>
             <span class="chip">PCIe 5.0</span>
           </div>
           <div class="price-row">
-            <span class="price">€ 3.299</span>
-            <a class="btn btn-primary" href="builder.html">Bekijk build</a>
+            <span class="price" id="home-hero-card-price">€ 3.299</span>
+            <a class="btn btn-primary" id="home-hero-card-cta" href="pcs.html">Bekijk build</a>
           </div>
           <div class="glow-card__footer">
             <span class="badge badge--success">Compatible</span>
@@ -88,6 +91,18 @@
           <div class="grid-info__card floating" style="--delay:450ms">Latency: DDR5-6000 CL30 hits the mark</div>
         </div>
       </div>
+    </section>
+
+    <section class="prebuilt-grid prebuilt-grid--home" id="home-prebuilt-grid" data-animate>
+      <header class="prebuilt-grid__header">
+        <div>
+          <p class="eyebrow">Nieuw gaming PC</p>
+          <h2 id="home-showcase-title">Editor picks voor dit kwartaal</h2>
+          <p class="lede" id="home-showcase-subtitle">Kant-en-klaar met matching thema-afbeeldingen en badges. Kies welke build op de homepage staat.</p>
+        </div>
+        <a class="btn btn-ghost" href="pcs.html">Bekijk alle prebuilds</a>
+      </header>
+      <div class="prebuilt-grid__items" id="home-prebuilt-cards"></div>
     </section>
 
     <section class="ticker" aria-label="trending updates">
@@ -249,8 +264,8 @@
     <section class="news-lab" data-animate>
       <div class="news-lab__intro">
         <p class="eyebrow">Tech nieuws</p>
-        <h2>Tweakers-achtige stroom van reviews & headlines</h2>
-        <p class="lede">Kies je volgende upgrade met kritische reviews, benchmarks, deals en een neon ticker die continu doorloopt.</p>
+        <h2 id="home-reviews-title">Tweakers-achtige stroom van reviews & headlines</h2>
+        <p class="lede" id="home-reviews-subtitle">Kies je volgende upgrade met kritische reviews, benchmarks, deals en een neon ticker die continu doorloopt.</p>
         <div class="pill-row">
           <span class="chip">Live</span>
           <span class="chip">Benchmarks</span>

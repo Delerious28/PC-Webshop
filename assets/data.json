@@ -84,5 +84,54 @@
     { "key": "Cooling", "label": "Cooling", "required": false },
     { "key": "Case", "label": "Case", "required": true },
     { "key": "PSU", "label": "Power Supply", "required": true }
-  ]
+  ],
+  "prebuiltPcs": [
+    {
+      "id": "neon-4k",
+      "name": "Neon 4K rig",
+      "price": "€ 3.299",
+      "useCase": "4K Ultra / RT on",
+      "specs": ["RTX 4090", "Ryzen 7 7800X3D", "64GB DDR5-6000", "2TB Gen4 NVMe"],
+      "badges": ["4K", "Raytracing"],
+      "image": "https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80"
+    },
+    {
+      "id": "creator-pro",
+      "name": "Creator Pro",
+      "price": "€ 2.499",
+      "useCase": "Productie / AI assist",
+      "specs": ["RTX 4080", "Core i9 14900K", "128GB DDR5", "4TB NVMe"],
+      "badges": ["AI ready", "Studio"],
+      "image": "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80"
+    },
+    {
+      "id": "esports-falcon",
+      "name": "eSports Falcon",
+      "price": "€ 1.499",
+      "useCase": "360Hz / competitive",
+      "specs": ["RTX 4070 Super", "Ryzen 5 7600X", "32GB DDR5", "1TB NVMe"],
+      "badges": ["1440p", "Low-latency"],
+      "image": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=1200&q=80"
+    }
+  ],
+  "homeContent": {
+    "heroTitle": "Assemble your droomrig",
+    "heroSubtitle": "Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.",
+    "heroCtaPrimaryLabel": "Start PC builder",
+    "heroCtaPrimaryHref": "builder.html",
+    "heroCtaSecondaryLabel": "Shop hardware",
+    "heroCtaSecondaryHref": "catalog.html",
+    "featuredPcId": "neon-4k",
+    "heroImage": "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80",
+    "showcaseTitle": "Deep-dive kaarten & deals",
+    "showcaseSubtitle": "Benchmarks, hover specs, skeleton loaders en filterchips die blijven staan terwijl je doorscrolt.",
+    "reviewsTitle": "Tweakers-achtige stroom van reviews & headlines",
+    "reviewsSubtitle": "Kies je volgende upgrade met kritische reviews, benchmarks, deals en een neon ticker die continu doorloopt.",
+    "heroCardTitle": "4K Gaming ready",
+    "heroCardSubtitle": "RTX 4090 + 7800X3D build",
+    "heroCardPrice": "€ 3.299",
+    "heroCardCta": "Bekijk build",
+    "heroCardImage": "https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80",
+    "heroCardBadge": "Nieuw"
+  }
 }

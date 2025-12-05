@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" class="admin-page">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop • Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="admin-page">
+  <header class="site-header site-header--mega">
+    <div class="logo">PC-Webshop</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a href="pcs.html">PC's</a>
+      <a href="forms.html">Forums</a>
+      <a class="pill" href="builder.html">PC Builder</a>
+    </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek admin, producten" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">👤</button>
+    </div>
+  </header>
+  <div class="header-ribbon ribbon--admin">
+    <span class="chip">Admin only</span>
+    <span class="chip">Accounts</span>
+    <span class="chip">Producten</span>
+    <span class="chip">Homepage CMS</span>
+  </div>
+
+  <main class="admin-main">
+    <aside class="admin-hero">
+      <div class="admin-hero__badge">👑 Admin</div>
+      <h1>Controlekamer</h1>
+      <p class="lede">Beheer accounts, bouw de homepage, kies de uitgelichte prebuilt en sync afbeeldingen. Alles zonder code.</p>
+      <div class="admin-identity">
+        <div id="admin-avatar" class="avatar avatar--glow">👤</div>
+        <div>
+          <div id="admin-name-display" class="mono">Admin</div>
+          <button id="admin-logout" class="btn btn-ghost btn-small">Uitloggen</button>
+        </div>
+      </div>
+      <div id="admin-error" class="admin-error" role="alert" aria-live="polite"></div>
+      <div class="admin-stats">
+        <div><span id="stat-total-users">0</span><small>Gebruikers</small></div>
+        <div><span id="stat-admin-users">0</span><small>Admins</small></div>
+        <div><span id="stat-total-products">0</span><small>Producten</small></div>
+        <div><span id="stat-total-orders">0</span><small>Orders</small></div>
+      </div>
+    </aside>
+
+    <section class="admin-panel">
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="accounts">Accounts</button>
+        <button class="admin-tab-btn" data-tab="products">Producten</button>
+        <button class="admin-tab-btn" data-tab="prebuilts">Prebuilt PC's</button>
+        <button class="admin-tab-btn" data-tab="home">Homepage</button>
+        <button class="admin-tab-btn" data-tab="settings">Instellingen</button>
+      </div>
+
+      <div class="admin-tab-content active" id="tab-accounts">
+        <div class="admin-toolbar">
+          <input id="search-accounts" type="search" placeholder="Zoek gebruikers" />
+          <div class="btn-row">
+            <button id="btn-promote-admin" class="btn btn-ghost btn-small">Maak admin</button>
+            <button id="btn-delete-user" class="btn btn-danger btn-small">Verwijder</button>
+          </div>
+        </div>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select-all-accounts" /></th>
+                <th>Gebruiker</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Gemaakt</th>
+                <th>Actie</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-list"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-products">
+        <form id="admin-product-form" class="admin-form">
+          <div class="grid-form two-col">
+            <label>ID<input required name="product-id" placeholder="gpu-5090" /></label>
+            <label>Naam<input required name="product-name" placeholder="RTX 5090" /></label>
+            <label>Categorie<select name="product-category">
+              <option>GPU</option><option>CPU</option><option>Motherboard</option><option>RAM</option><option>Case</option><option>PSU</option><option>Storage</option><option>Cooling</option>
+            </select></label>
+            <label>Brand<input name="product-brand" placeholder="ASUS" /></label>
+            <label>Prijs<input type="number" name="product-price" min="0" step="1" /></label>
+            <label>Korting %<input type="number" name="product-discount" min="0" max="90" step="1" /></label>
+            <label>Voorraad<input type="number" name="product-stock" min="0" step="1" /></label>
+            <label>Specs (comma)<textarea name="product-specs" rows="2" placeholder="24GB, HDMI 2.1"></textarea></label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" type="submit">Opslaan / Updaten</button>
+            <button id="btn-delete-product" class="btn btn-danger" type="button">Verwijder selectie</button>
+          </div>
+        </form>
+        <div class="admin-toolbar">
+          <input id="search-products" type="search" placeholder="Zoek producten" />
+          <label class="mono"><input type="checkbox" id="select-all-products" /> Selecteer alles</label>
+        </div>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr>
+                <th></th><th>Naam</th><th>Cat.</th><th>Prijs</th><th>Korting</th><th>Stock</th><th>Acties</th>
+              </tr>
+            </thead>
+            <tbody id="products-list"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-prebuilts">
+        <form id="prebuilt-form" class="admin-form">
+          <div class="grid-form two-col">
+            <label>ID<input required name="prebuilt-id" placeholder="neon-4k" /></label>
+            <label>Naam<input required name="prebuilt-name" placeholder="Neon 4K rig" /></label>
+            <label>Prijs<input type="text" name="prebuilt-price" placeholder="€ 3.299" /></label>
+            <label>Gebruik<input name="prebuilt-usecase" placeholder="4K Ultra / eSports" /></label>
+            <label>Afbeelding URL<input type="url" name="prebuilt-image" placeholder="https://images..." /></label>
+            <label>Belangrijkste specs<textarea name="prebuilt-specs" rows="2" placeholder="RTX 4090, 7800X3D, 64GB DDR5"></textarea></label>
+            <label>Badges<textarea name="prebuilt-badges" rows="2" placeholder="4K, Raytracing"></textarea></label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" type="submit">Opslaan / Updaten</button>
+            <button id="btn-delete-prebuilt" class="btn btn-danger" type="button">Verwijder selectie</button>
+          </div>
+        </form>
+        <div class="admin-toolbar">
+          <input id="search-prebuilt" type="search" placeholder="Zoek prebuilt" />
+          <label class="mono"><input type="checkbox" id="select-all-prebuilt" /> Selecteer alles</label>
+        </div>
+        <div class="admin-table">
+          <table>
+            <thead>
+              <tr><th></th><th>Naam</th><th>Gebruik</th><th>Prijs</th><th>Badges</th><th>Acties</th></tr>
+            </thead>
+            <tbody id="prebuilt-list"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-tab-content" id="tab-home">
+        <form id="home-form" class="admin-form-panel">
+          <div class="grid-form two-col">
+            <label>Hero titel<input id="home-hero-title" /></label>
+            <label>Hero subtitel<input id="home-hero-subtitle" /></label>
+            <label>Primary CTA label<input id="home-hero-cta-label" /></label>
+            <label>Primary CTA link<input id="home-hero-cta-href" /></label>
+            <label>Secondary CTA label<input id="home-hero-cta2-label" /></label>
+            <label>Secondary CTA link<input id="home-hero-cta2-href" /></label>
+            <label>Hero achtergrond (afbeelding)<input id="home-hero-image" placeholder="https://..." /></label>
+            <label>Showcase titel<input id="home-showcase-title-input" /></label>
+            <label>Showcase subtitel<input id="home-showcase-subtitle-input" /></label>
+            <label>Reviews titel<input id="home-reviews-title" /></label>
+            <label>Reviews subtitel<input id="home-reviews-subtitle" /></label>
+            <label>Hero card titel<input id="home-hero-card-title-input" /></label>
+            <label>Hero card subtitel<input id="home-hero-card-subtitle-input" /></label>
+            <label>Hero card prijs<input id="home-hero-card-price-input" /></label>
+            <label>Hero card CTA<input id="home-hero-card-cta-input" /></label>
+            <label>Hero card afbeelding<input id="home-hero-card-image-input" placeholder="https://..." /></label>
+            <label>Hero card badge<input id="home-hero-card-badge-input" placeholder="Nieuw, 4K ready" /></label>
+            <label>Uitgelichte prebuilt<select id="home-featured-pc"></select></label>
+          </div>
+          <button id="home-save" class="btn btn-primary" type="button">Bewaar homepage</button>
+        </form>
+      </div>
+
+      <div class="admin-tab-content" id="tab-settings">
+        <div class="admin-form-panel">
+          <label class="toggle"><input type="checkbox" id="setting-require-approval" /> Vereis goedkeuring voor reacties</label>
+          <label class="toggle"><input type="checkbox" id="setting-public-profiles" checked /> Publieke profielen</label>
+          <div class="btn-row">
+            <button id="btn-save-settings" class="btn btn-primary" type="button">Opslaan</button>
+            <button id="btn-export-data" class="btn btn-ghost" type="button">Exporteer</button>
+            <button id="btn-import-data" class="btn btn-ghost" type="button">Importeer</button>
+            <input id="import-file" type="file" accept="application/json" hidden />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/admin.js"></script>
+</body>
+</html>

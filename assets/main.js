@@ -85,6 +85,35 @@ const defaultData = {
     { key: 'Case', label: 'Case', required: true },
     { key: 'PSU', label: 'Power Supply', required: true },
   ],
+  prebuiltPcs: [
+    {
+      id: 'neon-4k',
+      name: 'Neon 4K rig',
+      price: '€ 3.299',
+      useCase: '4K Ultra / RT on',
+      specs: ['RTX 4090', 'Ryzen 7 7800X3D', '64GB DDR5-6000', '2TB Gen4 NVMe'],
+      badges: ['4K', 'Raytracing'],
+      image: 'https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      id: 'creator-pro',
+      name: 'Creator Pro',
+      price: '€ 2.499',
+      useCase: 'Productie / AI assist',
+      specs: ['RTX 4080', 'Core i9 14900K', '128GB DDR5', '4TB NVMe'],
+      badges: ['AI ready', 'Studio'],
+      image: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      id: 'esports-falcon',
+      name: 'eSports Falcon',
+      price: '€ 1.499',
+      useCase: '360Hz / competitive',
+      specs: ['RTX 4070 Super', 'Ryzen 5 7600X', '32GB DDR5', '1TB NVMe'],
+      badges: ['1440p', 'Low-latency'],
+      image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=1200&q=80',
+    },
+  ],
   homeContent: {
     heroTitle: 'Assemble your droomrig',
     heroSubtitle: 'Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.',
@@ -92,6 +121,8 @@ const defaultData = {
     heroCtaPrimaryHref: 'builder.html',
     heroCtaSecondaryLabel: 'Shop hardware',
     heroCtaSecondaryHref: 'catalog.html',
+    featuredPcId: 'neon-4k',
+    heroImage: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80',
     showcaseTitle: 'Deep-dive kaarten & deals',
     showcaseSubtitle: 'Benchmarks, hover specs, skeleton loaders en filterchips die blijven staan terwijl je doorscrolt.',
     reviewsTitle: 'Tweakers-achtige stroom van reviews & headlines',
@@ -100,6 +131,8 @@ const defaultData = {
     heroCardSubtitle: 'RTX 4090 + 7800X3D build',
     heroCardPrice: '€ 3.299',
     heroCardCta: 'Bekijk build',
+    heroCardImage: 'https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80',
+    heroCardBadge: 'Nieuw',
   },
 };
 
@@ -207,6 +240,7 @@ function mergeData(base = defaultData, remote = {}, overrides = {}) {
     products: mergeUniqueById(base.products, remote.products || []).concat(overrides.products || []),
     newsItems: mergeUniqueById(base.newsItems, remote.newsItems || []).concat(overrides.newsItems || []),
     forumThreads: mergeUniqueById(base.forumThreads, remote.forumThreads || []).concat(overrides.forumThreads || []),
+    prebuiltPcs: mergeUniqueById(base.prebuiltPcs, remote.prebuiltPcs || []).concat(overrides.prebuiltPcs || []),
     filterConfig: {
       ...base.filterConfig,
       ...(remote.filterConfig || {}),
@@ -621,60 +655,87 @@ function refreshAuthRefs() {
 function buildAuthModal() {
   if (!refs.authModal) return;
   refs.authModal.innerHTML = `
-    <div class="modal__content modal__content--wide">
-      <div class="modal__header">
-        <h3>Account toegang</h3>
-        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+    <div class="modal__content modal__content--wide auth-layout">
+      <div class="auth-visual">
+        <p class="eyebrow">Account center</p>
+        <h3>Gelaagde login-ervaring</h3>
+        <p class="lede">Tabs voor login, reset en registratie. Gradient achtergrond, trust badges en direct admin demo-gegevens.</p>
+        <div class="pill-row">
+          <span class="chip">2FA ready</span>
+          <span class="chip">Avatar sync</span>
+          <span class="chip">CMS toegang</span>
+        </div>
+        <div class="auth-demo">
+          <div>Admin demo</div>
+          <code>admin / admin123</code>
+        </div>
       </div>
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="login">Inloggen</button>
-        <button class="auth-tab" data-tab="forgot">Wachtwoord vergeten</button>
-        <button class="auth-tab" data-tab="create">Account maken</button>
-      </div>
-      <div class="auth-tab-content active" id="auth-tab-login">
-        <form id="auth-login-form" class="stack">
-          <div id="auth-login-error" class="form-error" style="display:none;"></div>
-          <label> Email of gebruikersnaam<input type="text" name="identifier" required placeholder="email of username" /></label>
-          <label> Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
-          <button class="btn btn-primary" type="submit">Inloggen</button>
-          <p class="mono">Demo admin: admin / admin123</p>
-        </form>
-        <p class="mono" id="auth-requirement"></p>
-      </div>
-      <div class="auth-tab-content" id="auth-tab-forgot">
-        <form id="auth-forgot-form" class="stack">
-          <div id="auth-forgot-error" class="form-error" style="display:none;"></div>
-          <div id="auth-forgot-success" class="form-success" style="display:none;"></div>
-          <label> Email<input type="email" name="identifier" required placeholder="you@example.com" /></label>
-          <button class="btn btn-primary" type="submit">Stuur reset-link</button>
-          <p class="mono">We mailen een reset-link. Deze demo past geen wachtwoord aan.</p>
-        </form>
-      </div>
-      <div class="auth-tab-content" id="auth-tab-create">
-        <div class="stack">
-          <p class="lede">Je gaat naar de registratiepagina om een account aan te maken.</p>
-          <a class="btn btn-primary" href="profile.html#register">Naar registratie</a>
-          <p class="mono">Heb je al een account? Gebruik het tabblad Inloggen.</p>
+      <div>
+        <div class="modal__header">
+          <h3>Account toegang</h3>
+          <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+        </div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Inloggen</button>
+          <button class="auth-tab" data-tab="forgot">Wachtwoord vergeten</button>
+          <button class="auth-tab" data-tab="create">Account maken</button>
+        </div>
+        <div class="auth-tab-content active" id="auth-tab-login">
+          <form id="auth-login-form" class="stack">
+            <div id="auth-login-error" class="form-error" style="display:none;"></div>
+            <label> Email of gebruikersnaam<input type="text" name="identifier" required placeholder="email of username" /></label>
+            <label> Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+            <button class="btn btn-primary" type="submit">Inloggen</button>
+            <p class="mono">Demo admin: admin / admin123</p>
+          </form>
+          <p class="mono" id="auth-requirement"></p>
+        </div>
+        <div class="auth-tab-content" id="auth-tab-forgot">
+          <form id="auth-forgot-form" class="stack">
+            <div id="auth-forgot-error" class="form-error" style="display:none;"></div>
+            <div id="auth-forgot-success" class="form-success" style="display:none;"></div>
+            <label> Email<input type="email" name="identifier" required placeholder="you@example.com" /></label>
+            <button class="btn btn-primary" type="submit">Stuur reset-link</button>
+            <p class="mono">We mailen een reset-link. Deze demo past geen wachtwoord aan.</p>
+          </form>
+        </div>
+        <div class="auth-tab-content" id="auth-tab-create">
+          <div class="stack">
+            <p class="lede">Je gaat naar de registratiepagina om een account aan te maken.</p>
+            <a class="btn btn-primary" href="profile.html#register">Naar registratie</a>
+            <p class="mono">Heb je al een account? Gebruik het tabblad Inloggen.</p>
+          </div>
         </div>
       </div>
     </div>
   `;
 }
 
+function getFeaturedPc() {
+  const pcs = state.data?.prebuiltPcs || [];
+  const featuredId = state.data?.homeContent?.featuredPcId;
+  return pcs.find((pc) => pc.id === featuredId) || pcs[0];
+}
+
 function applyHomeContent() {
   const content = state.data?.homeContent || {};
+  const featuredPc = getFeaturedPc();
   const heroTitle = document.getElementById('home-hero-title');
   const heroSubtitle = document.getElementById('home-hero-subtitle');
   const heroCtaPrimary = document.getElementById('home-hero-cta-primary');
   const heroCtaSecondary = document.getElementById('home-hero-cta-secondary');
+  const heroVisual = document.getElementById('home-hero-visual');
   const showcaseTitle = document.getElementById('home-showcase-title');
   const showcaseSubtitle = document.getElementById('home-showcase-subtitle');
-   const reviewsTitle = document.getElementById('home-reviews-title');
-   const reviewsSubtitle = document.getElementById('home-reviews-subtitle');
-   const heroCardTitle = document.getElementById('home-hero-card-title');
-   const heroCardSubtitle = document.getElementById('home-hero-card-subtitle');
-   const heroCardPrice = document.getElementById('home-hero-card-price');
-   const heroCardCta = document.getElementById('home-hero-card-cta');
+  const reviewsTitle = document.getElementById('home-reviews-title');
+  const reviewsSubtitle = document.getElementById('home-reviews-subtitle');
+  const heroCardTitle = document.getElementById('home-hero-card-title');
+  const heroCardSubtitle = document.getElementById('home-hero-card-subtitle');
+  const heroCardPrice = document.getElementById('home-hero-card-price');
+  const heroCardCta = document.getElementById('home-hero-card-cta');
+  const heroCardImage = document.getElementById('home-hero-card-image');
+  const heroCardBadge = document.getElementById('home-hero-card-badge');
+  const heroCardTags = document.getElementById('home-hero-card-tags');
 
   if (heroTitle && content.heroTitle) heroTitle.textContent = content.heroTitle;
   if (heroSubtitle && content.heroSubtitle) heroSubtitle.textContent = content.heroSubtitle;
@@ -686,14 +747,105 @@ function applyHomeContent() {
     if (content.heroCtaSecondaryLabel) heroCtaSecondary.textContent = content.heroCtaSecondaryLabel;
     if (content.heroCtaSecondaryHref) heroCtaSecondary.href = content.heroCtaSecondaryHref;
   }
+  if (heroVisual && content.heroImage) {
+    heroVisual.style.backgroundImage = `radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 50%), url(${content.heroImage})`;
+  }
   if (showcaseTitle && content.showcaseTitle) showcaseTitle.textContent = content.showcaseTitle;
   if (showcaseSubtitle && content.showcaseSubtitle) showcaseSubtitle.textContent = content.showcaseSubtitle;
   if (reviewsTitle && content.reviewsTitle) reviewsTitle.textContent = content.reviewsTitle;
   if (reviewsSubtitle && content.reviewsSubtitle) reviewsSubtitle.textContent = content.reviewsSubtitle;
-  if (heroCardTitle && content.heroCardTitle) heroCardTitle.textContent = content.heroCardTitle;
-  if (heroCardSubtitle && content.heroCardSubtitle) heroCardSubtitle.textContent = content.heroCardSubtitle;
-  if (heroCardPrice && content.heroCardPrice) heroCardPrice.textContent = content.heroCardPrice;
-  if (heroCardCta && content.heroCardCta) heroCardCta.textContent = content.heroCardCta;
+
+  const cardTitle = content.heroCardTitle || featuredPc?.name;
+  const cardSubtitle = content.heroCardSubtitle || featuredPc?.useCase;
+  const cardPrice = content.heroCardPrice || featuredPc?.price;
+  const cardCta = content.heroCardCta || 'Bekijk build';
+  const cardImage = content.heroCardImage || featuredPc?.image || content.heroImage;
+  const cardBadge = content.heroCardBadge || featuredPc?.badges?.[0] || 'Nieuw';
+
+  if (heroCardTitle && cardTitle) heroCardTitle.textContent = cardTitle;
+  if (heroCardSubtitle && cardSubtitle) heroCardSubtitle.textContent = cardSubtitle;
+  if (heroCardPrice && cardPrice) heroCardPrice.textContent = cardPrice;
+  if (heroCardCta) {
+    heroCardCta.textContent = cardCta;
+    heroCardCta.href = featuredPc ? `pcs.html#${featuredPc.id}` : 'pcs.html';
+  }
+  if (heroCardImage && cardImage) {
+    heroCardImage.style.backgroundImage = `url(${cardImage})`;
+  }
+  if (heroCardBadge) heroCardBadge.textContent = cardBadge;
+  if (heroCardTags) {
+    heroCardTags.innerHTML = '';
+    (featuredPc?.specs || []).slice(0, 3).forEach((spec) => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = spec;
+      heroCardTags.appendChild(chip);
+    });
+  }
+}
+
+function buildPrebuiltCard(pc, isFeatured = false) {
+  const card = document.createElement('article');
+  card.className = 'prebuilt-card';
+  if (isFeatured) card.classList.add('prebuilt-card--featured');
+  card.id = pc.id;
+  card.innerHTML = `
+    <div class="prebuilt-card__image" style="background-image:url(${pc.image || ''})"></div>
+    <div class="prebuilt-card__body">
+      <div class="prebuilt-card__title-row">
+        <h3>${pc.name}</h3>
+        ${isFeatured ? '<span class="badge badge--success">Homepage</span>' : ''}
+      </div>
+      <p class="mono">${pc.useCase || ''}</p>
+      <div class="pill-row">${(pc.badges || []).map((b) => `<span class="chip">${b}</span>`).join('')}</div>
+      <ul class="spec-line">${(pc.specs || []).slice(0, 4).map((s) => `<li>${s}</li>`).join('')}</ul>
+      <div class="price-row">
+        <span class="price">${pc.price || ''}</span>
+        <a class="btn btn-ghost" href="pcs.html#${pc.id}">Bekijk</a>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function renderHomePrebuilts() {
+  const container = document.getElementById('home-prebuilt-cards');
+  if (!container) return;
+  container.innerHTML = '';
+  const pcs = (state.data?.prebuiltPcs || []).slice(0, 3);
+  const featured = getFeaturedPc();
+  pcs.forEach((pc) => container.appendChild(buildPrebuiltCard(pc, pc.id === featured?.id)));
+}
+
+function renderPrebuiltPage() {
+  const grid = document.getElementById('prebuilt-grid');
+  const spotlightImage = document.getElementById('prebuilt-feature-image');
+  const spotlightTitle = document.getElementById('prebuilt-feature-title');
+  const spotlightSubtitle = document.getElementById('prebuilt-feature-subtitle');
+  const spotlightBadges = document.getElementById('prebuilt-feature-badges');
+  const spotlightPrice = document.getElementById('prebuilt-feature-price');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+  const pcs = state.data?.prebuiltPcs || [];
+  const featured = getFeaturedPc();
+  pcs.forEach((pc) => grid.appendChild(buildPrebuiltCard(pc, pc.id === featured?.id)));
+
+  if (featured) {
+    if (spotlightImage) spotlightImage.style.backgroundImage = `url(${featured.image || ''})`;
+    if (spotlightTitle) spotlightTitle.textContent = featured.name;
+    if (spotlightSubtitle) spotlightSubtitle.textContent = featured.useCase || '';
+    if (spotlightPrice) spotlightPrice.textContent = featured.price || '';
+    if (spotlightBadges) {
+      spotlightBadges.innerHTML = '';
+      (featured.badges || []).forEach((b) => {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = b;
+        spotlightBadges.appendChild(chip);
+      });
+    }
+  }
 }
 
 function requireAuth(reason = 'deze actie') {
@@ -1061,6 +1213,8 @@ function refreshDataFromOverrides() {
   renderProducts(true);
   renderBuilder();
   applyHomeContent();
+  renderHomePrebuilts();
+  renderPrebuiltPage();
   showAdminStatus('Data bijgewerkt met admin content', 'success');
 }
 
@@ -1132,6 +1286,8 @@ async function initData() {
   state.baseData = mergeData(defaultData, remoteData, localProducts);
   state.data = mergeData(state.baseData, {}, state.adminOverrides);
   applyHomeContent();
+  renderHomePrebuilts();
+  renderPrebuiltPage();
   const urlCategory = new URLSearchParams(window.location.search).get('category');
   const filterKeys = Object.keys(getFilterConfig());
   state.category = urlCategory || document.body?.dataset?.defaultCategory || filterKeys[0] || 'GPU';
