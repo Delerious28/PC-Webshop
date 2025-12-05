@@ -85,6 +85,22 @@ const defaultData = {
     { key: 'Case', label: 'Case', required: true },
     { key: 'PSU', label: 'Power Supply', required: true },
   ],
+  homeContent: {
+    heroTitle: 'Assemble your droomrig',
+    heroSubtitle: 'Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.',
+    heroCtaPrimaryLabel: 'Start PC builder',
+    heroCtaPrimaryHref: 'builder.html',
+    heroCtaSecondaryLabel: 'Shop hardware',
+    heroCtaSecondaryHref: 'catalog.html',
+    showcaseTitle: 'Deep-dive kaarten & deals',
+    showcaseSubtitle: 'Benchmarks, hover specs, skeleton loaders en filterchips die blijven staan terwijl je doorscrolt.',
+    reviewsTitle: 'Tweakers-achtige stroom van reviews & headlines',
+    reviewsSubtitle: 'Kies je volgende upgrade met kritische reviews, benchmarks, deals en een neon ticker die continu doorloopt.',
+    heroCardTitle: '4K Gaming ready',
+    heroCardSubtitle: 'RTX 4090 + 7800X3D build',
+    heroCardPrice: '€ 3.299',
+    heroCardCta: 'Bekijk build',
+  },
 };
 
 const state = {
@@ -97,6 +113,14 @@ const state = {
   baseData: defaultData,
   adminOverrides: {},
 };
+
+function getLocalProducts() {
+  try {
+    return JSON.parse(localStorage.getItem('pcwebshop_products') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
 
 const refs = {
   shopSection: document.getElementById('shop-section'),
@@ -147,6 +171,13 @@ function formatCurrency(amount) {
   return `$${amount.toFixed(0)}`;
 }
 
+function getEffectivePrice(product) {
+  const base = Number(product.originalPrice ?? product.price ?? 0);
+  const discount = Number(product.discountPercent || 0);
+  const final = discount > 0 ? Math.max(0, Math.round(base * (1 - discount / 100))) : base;
+  return { base, final, discount };
+}
+
 function mergeUniqueById(base = [], extra = []) {
   const seen = new Set(base.map((item) => item.id));
   const merged = [...base];
@@ -182,7 +213,41 @@ function mergeData(base = defaultData, remote = {}, overrides = {}) {
       ...(overrides.filterConfig || {}),
     },
     builderSteps: mergeSteps(base.builderSteps || [], remote.builderSteps || [], overrides.builderSteps || []),
+    homeContent: {
+      ...(base.homeContent || {}),
+      ...(remote.homeContent || {}),
+      ...(overrides.homeContent || {}),
+    },
   };
+}
+
+function getAllAccounts() {
+  try {
+    return JSON.parse(localStorage.getItem('pcwebshop_all_accounts') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveAllAccounts(accounts = []) {
+  localStorage.setItem('pcwebshop_all_accounts', JSON.stringify(accounts));
+}
+
+function ensureDefaultAdmin() {
+  const accounts = getAllAccounts();
+  const hasAdmin = accounts.some((a) => a.username === 'admin');
+  if (!hasAdmin) {
+    accounts.push({
+      id: 'admin-seed',
+      email: 'admin@webshop.local',
+      username: 'admin',
+      password: 'admin123',
+      role: 'admin',
+      avatar: '',
+      createdAt: new Date().toISOString(),
+    });
+    saveAllAccounts(accounts);
+  }
 }
 
 function loadUser() {
@@ -196,10 +261,42 @@ function loadUser() {
   }
 }
 
-function persistUser() {
-  if (state.user) {
-    localStorage.setItem('pcwebshop_user', JSON.stringify(state.user));
+function persistUser(accountForStorage = null) {
+  if (!state.user) return;
+  localStorage.setItem('pcwebshop_user', JSON.stringify(state.user));
+
+  const accounts = getAllAccounts();
+  const idx = accounts.findIndex(
+    (a) => a.id === state.user.id || a.username === state.user.username || a.email === state.user.email
+  );
+  const existing = idx >= 0 ? accounts[idx] : {};
+  const merged = {
+    ...existing,
+    ...accountForStorage,
+    id: state.user.id || existing.id || `user_${Date.now()}`,
+    email: state.user.email || existing.email,
+    username: state.user.username || existing.username,
+    role: accountForStorage?.role || existing.role || state.user.role || 'user',
+    avatar: state.user.avatar || existing.avatar || '',
+    createdAt: existing.createdAt || new Date().toISOString(),
+  };
+  if (idx >= 0) {
+    accounts[idx] = merged;
+  } else {
+    accounts.push(merged);
   }
+  saveAllAccounts(accounts);
+}
+
+function setUserFromAccount(account) {
+  state.user = {
+    id: account.id,
+    email: account.email,
+    username: account.username,
+    avatar: account.avatar,
+    role: account.role || 'user',
+  };
+  persistUser(account);
 }
 
 function loadAdminOverrides() {
@@ -352,6 +449,7 @@ function renderProducts(showSkeleton = false) {
   refs.productGrid.innerHTML = '';
   const list = getProducts().filter((p) => p.category === state.category && productPassesFilters(p));
   list.forEach((product) => {
+    const priceInfo = getEffectivePrice(product);
     const card = document.createElement('article');
     card.className = 'product-card';
     card.innerHTML = `
@@ -360,7 +458,11 @@ function renderProducts(showSkeleton = false) {
           <div class="card__title">${product.name}</div>
           <div class="card__meta">${product.brand} · ${product.category}</div>
         </div>
-        <div class="price">${formatCurrency(product.price)}</div>
+        <div class="price">
+          ${priceInfo.discount > 0 ? `<span class="old-price">${formatCurrency(priceInfo.base)}</span>` : ''}
+          <span>${formatCurrency(priceInfo.final)}</span>
+          ${priceInfo.discount > 0 ? `<span class="badge badge--warn">-${priceInfo.discount}%</span>` : ''}
+        </div>
       </div>
       <div class="card__specs">
         ${(product.topSpecs || []).map((s) => `<span>${s}</span>`).join('')}
@@ -373,7 +475,7 @@ function renderProducts(showSkeleton = false) {
         ${(product.topSpecs || []).slice(0, 3).map((s) => `<strong>${s}</strong>`).join('')}
       </div>
     `;
-    card.querySelector('.btn-primary').addEventListener('click', () => addToCart(product));
+    card.querySelector('.btn-primary').addEventListener('click', () => addToCart({ ...product, price: priceInfo.final }));
     refs.productGrid.appendChild(card);
   });
 }
@@ -427,7 +529,8 @@ function addToCart(product) {
   if (existing) {
     existing.qty += 1;
   } else {
-    state.cart.push({ ...product, qty: 1 });
+    const priceInfo = getEffectivePrice(product);
+    state.cart.push({ ...product, price: priceInfo.final, qty: 1, originalPrice: priceInfo.base, discountPercent: priceInfo.discount });
   }
   renderCart();
   openCart();
@@ -508,11 +611,104 @@ function closeModals() {
   closeSearch();
 }
 
+function refreshAuthRefs() {
+  refs.authModal = document.getElementById('auth-modal');
+  refs.profileModal = document.getElementById('profile-modal');
+  refs.modalBackdrop = document.getElementById('modal-backdrop');
+  refs.authRequirement = document.getElementById('auth-requirement');
+}
+
+function buildAuthModal() {
+  if (!refs.authModal) return;
+  refs.authModal.innerHTML = `
+    <div class="modal__content modal__content--wide">
+      <div class="modal__header">
+        <h3>Account toegang</h3>
+        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Inloggen</button>
+        <button class="auth-tab" data-tab="forgot">Wachtwoord vergeten</button>
+        <button class="auth-tab" data-tab="create">Account maken</button>
+      </div>
+      <div class="auth-tab-content active" id="auth-tab-login">
+        <form id="auth-login-form" class="stack">
+          <div id="auth-login-error" class="form-error" style="display:none;"></div>
+          <label> Email of gebruikersnaam<input type="text" name="identifier" required placeholder="email of username" /></label>
+          <label> Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+          <button class="btn btn-primary" type="submit">Inloggen</button>
+          <p class="mono">Demo admin: admin / admin123</p>
+        </form>
+        <p class="mono" id="auth-requirement"></p>
+      </div>
+      <div class="auth-tab-content" id="auth-tab-forgot">
+        <form id="auth-forgot-form" class="stack">
+          <div id="auth-forgot-error" class="form-error" style="display:none;"></div>
+          <div id="auth-forgot-success" class="form-success" style="display:none;"></div>
+          <label> Email<input type="email" name="identifier" required placeholder="you@example.com" /></label>
+          <button class="btn btn-primary" type="submit">Stuur reset-link</button>
+          <p class="mono">We mailen een reset-link. Deze demo past geen wachtwoord aan.</p>
+        </form>
+      </div>
+      <div class="auth-tab-content" id="auth-tab-create">
+        <div class="stack">
+          <p class="lede">Je gaat naar de registratiepagina om een account aan te maken.</p>
+          <a class="btn btn-primary" href="profile.html#register">Naar registratie</a>
+          <p class="mono">Heb je al een account? Gebruik het tabblad Inloggen.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function applyHomeContent() {
+  const content = state.data?.homeContent || {};
+  const heroTitle = document.getElementById('home-hero-title');
+  const heroSubtitle = document.getElementById('home-hero-subtitle');
+  const heroCtaPrimary = document.getElementById('home-hero-cta-primary');
+  const heroCtaSecondary = document.getElementById('home-hero-cta-secondary');
+  const showcaseTitle = document.getElementById('home-showcase-title');
+  const showcaseSubtitle = document.getElementById('home-showcase-subtitle');
+   const reviewsTitle = document.getElementById('home-reviews-title');
+   const reviewsSubtitle = document.getElementById('home-reviews-subtitle');
+   const heroCardTitle = document.getElementById('home-hero-card-title');
+   const heroCardSubtitle = document.getElementById('home-hero-card-subtitle');
+   const heroCardPrice = document.getElementById('home-hero-card-price');
+   const heroCardCta = document.getElementById('home-hero-card-cta');
+
+  if (heroTitle && content.heroTitle) heroTitle.textContent = content.heroTitle;
+  if (heroSubtitle && content.heroSubtitle) heroSubtitle.textContent = content.heroSubtitle;
+  if (heroCtaPrimary) {
+    if (content.heroCtaPrimaryLabel) heroCtaPrimary.textContent = content.heroCtaPrimaryLabel;
+    if (content.heroCtaPrimaryHref) heroCtaPrimary.href = content.heroCtaPrimaryHref;
+  }
+  if (heroCtaSecondary) {
+    if (content.heroCtaSecondaryLabel) heroCtaSecondary.textContent = content.heroCtaSecondaryLabel;
+    if (content.heroCtaSecondaryHref) heroCtaSecondary.href = content.heroCtaSecondaryHref;
+  }
+  if (showcaseTitle && content.showcaseTitle) showcaseTitle.textContent = content.showcaseTitle;
+  if (showcaseSubtitle && content.showcaseSubtitle) showcaseSubtitle.textContent = content.showcaseSubtitle;
+  if (reviewsTitle && content.reviewsTitle) reviewsTitle.textContent = content.reviewsTitle;
+  if (reviewsSubtitle && content.reviewsSubtitle) reviewsSubtitle.textContent = content.reviewsSubtitle;
+  if (heroCardTitle && content.heroCardTitle) heroCardTitle.textContent = content.heroCardTitle;
+  if (heroCardSubtitle && content.heroCardSubtitle) heroCardSubtitle.textContent = content.heroCardSubtitle;
+  if (heroCardPrice && content.heroCardPrice) heroCardPrice.textContent = content.heroCardPrice;
+  if (heroCardCta && content.heroCardCta) heroCardCta.textContent = content.heroCardCta;
+}
+
 function requireAuth(reason = 'deze actie') {
   if (state.user) return true;
   if (refs.authRequirement) {
     refs.authRequirement.textContent = `Login vereist voor ${reason}. Alleen email, gebruikersnaam en wachtwoord.`;
   }
+  document.querySelectorAll('.auth-tab').forEach((btn) => {
+    const isLogin = btn.dataset.tab === 'login';
+    btn.classList.toggle('active', isLogin);
+  });
+  document.querySelectorAll('.auth-tab-content').forEach((section) => {
+    const isLogin = section.id === 'auth-tab-login';
+    section.classList.toggle('active', isLogin);
+  });
   openModal(refs.authModal);
   return false;
 }
@@ -531,6 +727,12 @@ function updateUserUI() {
   if (refs.profileForm && state.user) {
     refs.profileForm.username.value = state.user.username;
     if (state.user.avatar) refs.profileForm.avatar.value = state.user.avatar;
+  }
+  
+  // Show/hide logout button
+  const logoutBtn = document.getElementById('profile-logout');
+  if (logoutBtn) {
+    logoutBtn.style.display = state.user ? 'block' : 'none';
   }
 }
 
@@ -695,8 +897,87 @@ function initAnimations() {
 }
 
 function initAuth() {
+  ensureDefaultAdmin();
+  buildAuthModal();
+  refreshAuthRefs();
+
+  const adminLink = document.getElementById('admin-link');
+
+  const switchAuthTab = (tab) => {
+    document.querySelectorAll('.auth-tab').forEach((btn) => btn.classList.remove('active'));
+    document.querySelectorAll('.auth-tab-content').forEach((section) => section.classList.remove('active'));
+    document.querySelector(`.auth-tab[data-tab="${tab}"]`)?.classList.add('active');
+    document.getElementById(`auth-tab-${tab}`)?.classList.add('active');
+  };
+
   loadUser();
   updateUserUI();
+  if (state.user?.role === 'admin' && adminLink) adminLink.style.display = 'inline';
+
+  document.querySelectorAll('.auth-tab').forEach((btn) => {
+    btn.addEventListener('click', () => switchAuthTab(btn.dataset.tab));
+  });
+
+  const loginForm = document.getElementById('auth-login-form');
+  loginForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(loginForm);
+    const identifier = `${data.get('identifier')}`.trim();
+    const password = `${data.get('password')}`;
+    const error = document.getElementById('auth-login-error');
+    if (!identifier || !password) return;
+    const account = getAllAccounts().find(
+      (a) => a.email === identifier || a.username === identifier
+    );
+    if (!account) {
+      if (error) {
+        error.textContent = 'Account niet gevonden';
+        error.style.display = 'block';
+      }
+      return;
+    }
+    if (!account.password) {
+      account.password = password;
+      saveAllAccounts(getAllAccounts().map((a) => (a.username === account.username ? account : a)));
+    } else if (account.password !== password) {
+      if (error) {
+        error.textContent = 'Wachtwoord onjuist';
+        error.style.display = 'block';
+      }
+      return;
+    }
+    if (error) error.style.display = 'none';
+    setUserFromAccount(account);
+    updateUserUI();
+    if (adminLink) adminLink.style.display = state.user?.role === 'admin' ? 'inline' : 'none';
+    closeModals();
+  });
+
+  const forgotForm = document.getElementById('auth-forgot-form');
+  forgotForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(forgotForm);
+    const identifier = `${data.get('identifier')}`.trim();
+    const error = document.getElementById('auth-forgot-error');
+    const success = document.getElementById('auth-forgot-success');
+    if (error) error.style.display = 'none';
+    if (success) success.style.display = 'none';
+    const accounts = getAllAccounts();
+    const exists = accounts.some((a) => a.email === identifier);
+    if (!exists) {
+      if (error) {
+        error.textContent = 'Email niet gevonden';
+        error.style.display = 'block';
+      }
+      return;
+    }
+    if (success) {
+      success.textContent = 'Reset-link aangevraagd. Controleer je email (demo verstuurt niet echt).';
+      success.style.display = 'block';
+    }
+    switchAuthTab('login');
+  });
+
   document.querySelectorAll('[data-requires-auth]').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       if (!requireAuth(btn.dataset.requiresAuth)) {
@@ -704,23 +985,20 @@ function initAuth() {
       }
     });
   });
-  document.querySelectorAll('[data-open-profile]').forEach((btn) => btn.addEventListener('click', () => openModal(refs.profileModal)));
+
+  document.querySelectorAll('[data-open-profile]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      if (state.user) {
+        openModal(refs.profileModal);
+      } else {
+        switchAuthTab('login');
+        openModal(refs.authModal);
+      }
+    })
+  );
   document.querySelectorAll('[data-close-profile]').forEach((btn) => btn.addEventListener('click', closeModals));
   document.querySelectorAll('[data-close-auth]').forEach((btn) => btn.addEventListener('click', closeModals));
   refs.modalBackdrop?.addEventListener('click', closeModals);
-
-  refs.authForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = new FormData(refs.authForm);
-    state.user = {
-      email: data.get('email'),
-      username: data.get('username'),
-      avatar: data.get('avatar') || '',
-    };
-    persistUser();
-    updateUserUI();
-    closeModals();
-  });
 
   refs.profileForm?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -741,6 +1019,17 @@ function initAuth() {
   checkoutBtn?.addEventListener('click', (e) => {
     if (!requireAuth('checkout')) {
       e.preventDefault();
+    }
+  });
+
+  const logoutBtn = document.getElementById('profile-logout');
+  logoutBtn?.addEventListener('click', () => {
+    if (confirm('Weet je zeker dat je uit wilt loggen?')) {
+      state.user = null;
+      localStorage.removeItem('pcwebshop_user');
+      updateUserUI();
+      if (adminLink) adminLink.style.display = 'none';
+      closeModals();
     }
   });
 }
@@ -771,6 +1060,7 @@ function refreshDataFromOverrides() {
   renderActiveFilters();
   renderProducts(true);
   renderBuilder();
+  applyHomeContent();
   showAdminStatus('Data bijgewerkt met admin content', 'success');
 }
 
@@ -838,8 +1128,10 @@ async function initData() {
   } catch (e) {
     console.warn('Kon assets/data.json niet laden, fallback naar default data');
   }
-  state.baseData = mergeData(defaultData, remoteData, {});
+  const localProducts = { products: getLocalProducts() };
+  state.baseData = mergeData(defaultData, remoteData, localProducts);
   state.data = mergeData(state.baseData, {}, state.adminOverrides);
+  applyHomeContent();
   const urlCategory = new URLSearchParams(window.location.search).get('category');
   const filterKeys = Object.keys(getFilterConfig());
   state.category = urlCategory || document.body?.dataset?.defaultCategory || filterKeys[0] || 'GPU';
