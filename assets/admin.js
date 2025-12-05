@@ -4,6 +4,7 @@ const adminState = {
   user: null,
   accounts: [],
   products: [],
+  prebuilts: [],
   settings: {
     requireApproval: false,
     publicProfiles: true,
@@ -33,7 +34,14 @@ const adminRefs = {
   selectAllProducts: document.getElementById('select-all-products'),
   productsList: document.getElementById('products-list'),
   btnDeleteProduct: document.getElementById('btn-delete-product'),
-  
+
+  // Prebuilt rigs
+  prebuiltForm: document.getElementById('prebuilt-form'),
+  searchPrebuilt: document.getElementById('search-prebuilt'),
+  selectAllPrebuilt: document.getElementById('select-all-prebuilt'),
+  prebuiltList: document.getElementById('prebuilt-list'),
+  btnDeletePrebuilt: document.getElementById('btn-delete-prebuilt'),
+
   // Settings
   settingRequireApproval: document.getElementById('setting-require-approval'),
   settingPublicProfiles: document.getElementById('setting-public-profiles'),
@@ -64,6 +72,10 @@ const adminRefs = {
   homeHeroCardSubtitle: document.getElementById('home-hero-card-subtitle-input'),
   homeHeroCardPrice: document.getElementById('home-hero-card-price-input'),
   homeHeroCardCta: document.getElementById('home-hero-card-cta-input'),
+  homeHeroImage: document.getElementById('home-hero-image'),
+  homeHeroCardImage: document.getElementById('home-hero-card-image-input'),
+  homeHeroCardBadge: document.getElementById('home-hero-card-badge-input'),
+  homeFeaturedPc: document.getElementById('home-featured-pc'),
   homeSave: document.getElementById('home-save'),
 };
 
@@ -74,6 +86,7 @@ const defaultHomeContent = {
   heroCtaPrimaryHref: 'builder.html',
   heroCtaSecondaryLabel: 'Shop hardware',
   heroCtaSecondaryHref: 'catalog.html',
+  heroImage: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80',
   showcaseTitle: 'Deep-dive kaarten & deals',
   showcaseSubtitle: 'Benchmarks, hover specs, skeleton loaders en filterchips die blijven staan terwijl je doorscrolt.',
   reviewsTitle: 'Tweakers-achtige stroom van reviews & headlines',
@@ -82,7 +95,40 @@ const defaultHomeContent = {
   heroCardSubtitle: 'RTX 4090 + 7800X3D build',
   heroCardPrice: '€ 3.299',
   heroCardCta: 'Bekijk build',
+  heroCardImage: 'https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80',
+  heroCardBadge: 'Nieuw',
+  featuredPcId: 'neon-4k',
 };
+
+const defaultPrebuiltPcs = [
+  {
+    id: 'neon-4k',
+    name: 'Neon 4K rig',
+    price: '€ 3.299',
+    useCase: '4K Ultra / RT on',
+    specs: ['RTX 4090', 'Ryzen 7 7800X3D', '64GB DDR5-6000', '2TB Gen4 NVMe'],
+    badges: ['4K', 'Raytracing'],
+    image: 'https://images.unsplash.com/photo-1587202372775-98973a62c11a?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'creator-pro',
+    name: 'Creator Pro',
+    price: '€ 2.499',
+    useCase: 'Productie / AI assist',
+    specs: ['RTX 4080', 'Core i9 14900K', '128GB DDR5', '4TB NVMe'],
+    badges: ['AI ready', 'Studio'],
+    image: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'esports-falcon',
+    name: 'eSports Falcon',
+    price: '€ 1.499',
+    useCase: '360Hz / competitive',
+    specs: ['RTX 4070 Super', 'Ryzen 5 7600X', '32GB DDR5', '1TB NVMe'],
+    badges: ['1440p', 'Low-latency'],
+    image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=1200&q=80',
+  },
+];
 
 function showError(message) {
   if (!adminRefs.error) return;
@@ -135,6 +181,26 @@ function saveProducts() {
   } catch (e) {
     // ignore
   }
+}
+
+function loadPrebuilts() {
+  try {
+    const overrides = JSON.parse(localStorage.getItem('pcwebshop_adminOverrides') || '{}');
+    adminState.prebuilts = overrides.prebuiltPcs || defaultPrebuiltPcs;
+  } catch (e) {
+    adminState.prebuilts = defaultPrebuiltPcs;
+  }
+}
+
+function savePrebuilts() {
+  let overrides = {};
+  try {
+    overrides = JSON.parse(localStorage.getItem('pcwebshop_adminOverrides') || '{}');
+  } catch (e) {
+    overrides = {};
+  }
+  overrides.prebuiltPcs = adminState.prebuilts;
+  localStorage.setItem('pcwebshop_adminOverrides', JSON.stringify(overrides));
 }
 
 function loadSettings() {
@@ -271,8 +337,51 @@ function renderProducts(filter = '') {
     `;
     adminRefs.productsList.appendChild(row);
   });
-  
+
   updateStats();
+}
+
+function populateFeaturedSelect() {
+  if (!adminRefs.homeFeaturedPc) return;
+  adminRefs.homeFeaturedPc.innerHTML = '';
+  adminState.prebuilts.forEach((pc) => {
+    const option = document.createElement('option');
+    option.value = pc.id;
+    option.textContent = `${pc.name} (${pc.useCase || ''})`;
+    adminRefs.homeFeaturedPc.appendChild(option);
+  });
+  const content = loadHomeContent();
+  if (content.featuredPcId) adminRefs.homeFeaturedPc.value = content.featuredPcId;
+}
+
+function renderPrebuilt(filter = '') {
+  if (!adminRefs.prebuiltList) return;
+  adminRefs.prebuiltList.innerHTML = '';
+  const query = (filter || '').toLowerCase();
+  const items = query
+    ? adminState.prebuilts.filter((p) =>
+        p.name.toLowerCase().includes(query) ||
+        p.useCase?.toLowerCase().includes(query) ||
+        p.badges?.join(' ').toLowerCase().includes(query)
+      )
+    : adminState.prebuilts;
+  if (!items.length) {
+    adminRefs.prebuiltList.innerHTML = '<tr class="no-data"><td colspan="6">Geen prebuilt rigs</td></tr>';
+    return;
+  }
+  items.forEach((pc) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="checkbox" data-prebuilt-id="${pc.id}" /></td>
+      <td>${pc.name}</td>
+      <td>${pc.useCase || ''}</td>
+      <td>${pc.price || ''}</td>
+      <td>${(pc.badges || []).map((b) => `<span class='chip'>${b}</span>`).join('')}</td>
+      <td><button class="btn btn-small" onclick="editPrebuilt('${pc.id}')">Bewerk</button></td>
+    `;
+    adminRefs.prebuiltList.appendChild(row);
+  });
+  populateFeaturedSelect();
 }
 
 function updateStats() {
@@ -303,6 +412,10 @@ function initTabSwitcher() {
         renderAccounts();
       } else if (tabName === 'products') {
         renderProducts();
+      } else if (tabName === 'prebuilts') {
+        renderPrebuilt();
+      } else if (tabName === 'home') {
+        initHomeHandlers();
       }
     });
   });
@@ -396,6 +509,51 @@ function initProductHandlers() {
   });
 }
 
+function initPrebuiltHandlers() {
+  adminRefs.prebuiltForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(adminRefs.prebuiltForm);
+    const entry = {
+      id: `${data.get('prebuilt-id')}`.trim(),
+      name: `${data.get('prebuilt-name')}`.trim(),
+      price: `${data.get('prebuilt-price')}`.trim(),
+      useCase: `${data.get('prebuilt-usecase')}`.trim(),
+      image: `${data.get('prebuilt-image')}`.trim(),
+      specs: `${data.get('prebuilt-specs')}`.split(',').map(s => s.trim()).filter(Boolean),
+      badges: `${data.get('prebuilt-badges')}`.split(',').map(s => s.trim()).filter(Boolean),
+    };
+    const existing = adminState.prebuilts.findIndex((p) => p.id === entry.id);
+    if (existing >= 0) {
+      adminState.prebuilts[existing] = entry;
+      showSuccess('Prebuilt bijgewerkt');
+    } else {
+      adminState.prebuilts.push(entry);
+      showSuccess('Prebuilt toegevoegd');
+    }
+    savePrebuilts();
+    renderPrebuilt();
+    populateFeaturedSelect();
+    adminRefs.prebuiltForm.reset();
+  });
+
+  adminRefs.searchPrebuilt?.addEventListener('input', (e) => renderPrebuilt(e.target.value));
+
+  adminRefs.selectAllPrebuilt?.addEventListener('change', (e) => {
+    document.querySelectorAll('[data-prebuilt-id]').forEach((cb) => {
+      cb.checked = e.target.checked;
+    });
+  });
+
+  adminRefs.btnDeletePrebuilt?.addEventListener('click', () => {
+    const checked = Array.from(document.querySelectorAll('[data-prebuilt-id]:checked'));
+    if (!checked.length) return;
+    adminState.prebuilts = adminState.prebuilts.filter((pc) => !checked.find((c) => c.dataset.prebuiltId === pc.id));
+    savePrebuilts();
+    renderPrebuilt();
+    populateFeaturedSelect();
+  });
+}
+
 function initSettingsHandlers() {
   adminRefs.btnSaveSettings?.addEventListener('click', saveSettings);
   
@@ -451,6 +609,7 @@ function initSettingsHandlers() {
 
 function initHomeHandlers() {
   if (!adminRefs.homeSave) return;
+  populateFeaturedSelect();
   const content = loadHomeContent();
   if (adminRefs.homeHeroTitle) adminRefs.homeHeroTitle.value = content.heroTitle || '';
   if (adminRefs.homeHeroSubtitle) adminRefs.homeHeroSubtitle.value = content.heroSubtitle || '';
@@ -458,6 +617,7 @@ function initHomeHandlers() {
   if (adminRefs.homeHeroCtaHref) adminRefs.homeHeroCtaHref.value = content.heroCtaPrimaryHref || '';
   if (adminRefs.homeHeroCta2Label) adminRefs.homeHeroCta2Label.value = content.heroCtaSecondaryLabel || '';
   if (adminRefs.homeHeroCta2Href) adminRefs.homeHeroCta2Href.value = content.heroCtaSecondaryHref || '';
+  if (adminRefs.homeHeroImage) adminRefs.homeHeroImage.value = content.heroImage || '';
   if (adminRefs.homeShowcaseTitle) adminRefs.homeShowcaseTitle.value = content.showcaseTitle || '';
   if (adminRefs.homeShowcaseSubtitle) adminRefs.homeShowcaseSubtitle.value = content.showcaseSubtitle || '';
   if (adminRefs.homeReviewsTitle) adminRefs.homeReviewsTitle.value = content.reviewsTitle || '';
@@ -466,6 +626,9 @@ function initHomeHandlers() {
   if (adminRefs.homeHeroCardSubtitle) adminRefs.homeHeroCardSubtitle.value = content.heroCardSubtitle || '';
   if (adminRefs.homeHeroCardPrice) adminRefs.homeHeroCardPrice.value = content.heroCardPrice || '';
   if (adminRefs.homeHeroCardCta) adminRefs.homeHeroCardCta.value = content.heroCardCta || '';
+  if (adminRefs.homeHeroCardImage) adminRefs.homeHeroCardImage.value = content.heroCardImage || '';
+  if (adminRefs.homeHeroCardBadge) adminRefs.homeHeroCardBadge.value = content.heroCardBadge || '';
+  if (adminRefs.homeFeaturedPc && content.featuredPcId) adminRefs.homeFeaturedPc.value = content.featuredPcId;
 
   adminRefs.homeSave.addEventListener('click', (e) => {
     e.preventDefault();
@@ -476,6 +639,7 @@ function initHomeHandlers() {
       heroCtaPrimaryHref: adminRefs.homeHeroCtaHref?.value || '',
       heroCtaSecondaryLabel: adminRefs.homeHeroCta2Label?.value || '',
       heroCtaSecondaryHref: adminRefs.homeHeroCta2Href?.value || '',
+      heroImage: adminRefs.homeHeroImage?.value || '',
       showcaseTitle: adminRefs.homeShowcaseTitle?.value || '',
       showcaseSubtitle: adminRefs.homeShowcaseSubtitle?.value || '',
       reviewsTitle: adminRefs.homeReviewsTitle?.value || '',
@@ -484,6 +648,9 @@ function initHomeHandlers() {
       heroCardSubtitle: adminRefs.homeHeroCardSubtitle?.value || '',
       heroCardPrice: adminRefs.homeHeroCardPrice?.value || '',
       heroCardCta: adminRefs.homeHeroCardCta?.value || '',
+      heroCardImage: adminRefs.homeHeroCardImage?.value || '',
+      heroCardBadge: adminRefs.homeHeroCardBadge?.value || '',
+      featuredPcId: adminRefs.homeFeaturedPc?.value || '',
     };
     saveHomeContent(updated);
   });
@@ -539,19 +706,37 @@ window.editProduct = function(productId) {
   window.scrollTo(0, 0);
 };
 
+window.editPrebuilt = function(prebuiltId) {
+  loadPrebuilts();
+  const pc = adminState.prebuilts.find((p) => p.id === prebuiltId);
+  if (!pc) return;
+  document.querySelector('input[name="prebuilt-id"]').value = pc.id;
+  document.querySelector('input[name="prebuilt-name"]').value = pc.name;
+  document.querySelector('input[name="prebuilt-price"]').value = pc.price || '';
+  document.querySelector('input[name="prebuilt-usecase"]').value = pc.useCase || '';
+  document.querySelector('input[name="prebuilt-image"]').value = pc.image || '';
+  document.querySelector('textarea[name="prebuilt-specs"]').value = (pc.specs || []).join(', ');
+  document.querySelector('textarea[name="prebuilt-badges"]').value = (pc.badges || []).join(', ');
+  document.querySelector('.admin-tab-btn[data-tab="prebuilts"]').click();
+  window.scrollTo(0, 0);
+};
+
 async function bootstrap() {
   checkAdminAuth();
   loadAccounts();
   loadProducts();
+  loadPrebuilts();
   loadSettings();
-  
+
   initTabSwitcher();
   initAccountHandlers();
   initProductHandlers();
+  initPrebuiltHandlers();
   initSettingsHandlers();
   initHomeHandlers();
-  
+
   renderAccounts();
+  renderPrebuilt();
   updateStats();
   
   adminRefs.adminLogout?.addEventListener('click', () => {
