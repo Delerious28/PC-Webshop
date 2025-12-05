@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop • PC Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header site-header--mega">
+    <div class="logo">PC-Webshop</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a href="forms.html">Forums</a>
+      <a class="pill active" href="builder.html">PC Builder</a>
+    </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek componenten, forums" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-cart aria-label="Winkelmand">
+        🛒
+        <span class="badge badge--pill" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">👤</button>
+    </div>
+  </header>
+  <div class="header-ribbon">
+    <span class="chip">Socket match</span>
+    <span class="chip">Wattage 1.5x</span>
+    <span class="chip">Account voor checkout</span>
+  </div>
+
+  <header class="hero hero--slim">
+    <div class="hero__content">
+      <p class="eyebrow">Compatibiliteitslaag</p>
+      <h1>Custom PC Builder</h1>
+      <p class="lede">Socket en RAM match, wattage headroom, GPU-length clearance en sticky totaalprijs.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="builder" id="builder-section">
+      <div class="builder__header">
+        <p class="eyebrow">Stapsgewijs</p>
+        <h2>Stel je rig samen</h2>
+        <p class="lede">Begin bij CPU of GPU en loop door alle onderdelen. Compatibiliteit wordt live gecontroleerd.</p>
+      </div>
+      <div class="builder__layout">
+        <div class="builder__steps" id="builder-steps"></div>
+        <div class="builder__side">
+          <div class="progress">
+            <div class="progress__label"><span id="progress-count">0/0</span><span id="progress-text">Start selecting parts</span></div>
+            <div class="progress__bar"><span id="progress-bar"></span></div>
+          </div>
+          <div class="totals" id="totals"></div>
+          <button class="btn btn-primary full-build" id="add-build">Voeg volledige build toe</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-overlay__panel">
+      <div class="search-overlay__header">
+        <h3>Zoek hardware, nieuws of forms</h3>
+        <button class="icon-btn" id="close-search" aria-label="Sluiten">×</button>
+      </div>
+      <input id="overlay-search" type="search" placeholder="Typ bv. AM5, RTX 4090, B650" />
+      <div id="search-results" class="search-results"></div>
+      <div class="search-trending">
+        <span class="chip">Socket</span>
+        <span class="chip">TDP</span>
+        <span class="chip">Clearance</span>
+        <span class="chip">PSU</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="auth-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Account nodig voor winkelmand</h3>
+        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+      </div>
+      <p class="lede">Builder blijft vrij. Om de build te kopen heb je email, gebruikersnaam en wachtwoord nodig.</p>
+      <form id="auth-form" class="stack">
+        <label>Email<input type="email" name="email" required placeholder="you@example.com" /></label>
+        <label>Gebruikersnaam<input type="text" name="username" required placeholder="Handle" /></label>
+        <label>Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+        <button class="btn btn-primary" type="submit">Log in / Account</button>
+      </form>
+      <p class="mono" id="auth-requirement"></p>
+    </div>
+  </div>
+  <div class="modal" id="profile-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Profiel</h3>
+        <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
+      </div>
+      <div class="profile-inline" id="profile-inline">
+        <div class="avatar" id="profile-avatar">👤</div>
+        <div>
+          <div class="mono" id="profile-name">Gast</div>
+          <div class="mono" id="profile-email">Geen login</div>
+        </div>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn-primary" href="profile.html">Volledige profielpagina</a>
+        <button class="btn btn-ghost" data-close-profile>Sluit</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3>Cart</h3>
+      <button id="close-cart" aria-label="Close cart">×</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-drawer__footer">
+      <div class="cart-total"><span>Subtotal</span><span id="cart-total">$0</span></div>
+      <button class="btn btn-primary">Checkout</button>
+    </div>
+  </div>
+  <div id="cart-backdrop" class="cart-backdrop"></div>
+
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>
