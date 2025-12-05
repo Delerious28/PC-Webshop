@@ -77,43 +77,51 @@ const builderSteps = [
   { key: 'PSU', label: 'Power Supply', required: true },
 ];
 
+const urlCategory = new URLSearchParams(window.location.search).get('category');
+const defaultCategory = urlCategory || document.body?.dataset?.defaultCategory || 'GPU';
+
 const state = {
-  category: 'GPU',
+  category: defaultCategory,
   filters: {},
   cart: [],
   builderSelections: {},
 };
 
-const categorySelect = document.getElementById('category-select');
-const filterGroups = document.getElementById('filter-groups');
-const productGrid = document.getElementById('product-grid');
-const skeletonGrid = document.getElementById('skeletons');
-const activeFilters = document.getElementById('active-filters');
-const builderStepsContainer = document.getElementById('builder-steps');
-const progressBar = document.getElementById('progress-bar');
-const progressCount = document.getElementById('progress-count');
-const progressText = document.getElementById('progress-text');
-const totals = document.getElementById('totals');
-const addBuildBtn = document.getElementById('add-build');
-const cartDrawer = document.getElementById('cart-drawer');
-const cartBackdrop = document.getElementById('cart-backdrop');
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
+const refs = {
+  shopSection: document.getElementById('shop-section'),
+  builderSection: document.getElementById('builder-section'),
+  categorySelect: document.getElementById('category-select'),
+  filterGroups: document.getElementById('filter-groups'),
+  productGrid: document.getElementById('product-grid'),
+  skeletonGrid: document.getElementById('skeletons'),
+  activeFilters: document.getElementById('active-filters'),
+  builderStepsContainer: document.getElementById('builder-steps'),
+  progressBar: document.getElementById('progress-bar'),
+  progressCount: document.getElementById('progress-count'),
+  progressText: document.getElementById('progress-text'),
+  totals: document.getElementById('totals'),
+  addBuildBtn: document.getElementById('add-build'),
+  cartDrawer: document.getElementById('cart-drawer'),
+  cartBackdrop: document.getElementById('cart-backdrop'),
+  cartItems: document.getElementById('cart-items'),
+  cartTotal: document.getElementById('cart-total'),
+};
 
 function formatCurrency(amount) {
   return `$${amount.toFixed(0)}`;
 }
 
 function initCategorySelect() {
+  if (!refs.categorySelect) return;
   Object.keys(filterConfig).forEach((cat) => {
     const option = document.createElement('option');
     option.value = cat;
     option.textContent = cat;
-    categorySelect.appendChild(option);
+    refs.categorySelect.appendChild(option);
   });
-  categorySelect.value = state.category;
-  categorySelect.addEventListener('change', () => {
-    state.category = categorySelect.value;
+  refs.categorySelect.value = state.category;
+  refs.categorySelect.addEventListener('change', () => {
+    state.category = refs.categorySelect.value;
     state.filters = {};
     renderFilters();
     renderActiveFilters();
@@ -122,7 +130,8 @@ function initCategorySelect() {
 }
 
 function renderFilters() {
-  filterGroups.innerHTML = '';
+  if (!refs.filterGroups || !refs.categorySelect) return;
+  refs.filterGroups.innerHTML = '';
   const groups = filterConfig[state.category] || [];
   groups.forEach((group) => {
     const wrap = document.createElement('div');
@@ -167,7 +176,7 @@ function renderFilters() {
       wrap.appendChild(row);
     }
 
-    filterGroups.appendChild(wrap);
+    refs.filterGroups.appendChild(wrap);
   });
 }
 
@@ -203,24 +212,26 @@ function productPassesFilters(product) {
 }
 
 function renderSkeletons() {
-  skeletonGrid.innerHTML = '';
-  skeletonGrid.classList.remove('hidden');
+  if (!refs.skeletonGrid) return;
+  refs.skeletonGrid.innerHTML = '';
+  refs.skeletonGrid.classList.remove('hidden');
   for (let i = 0; i < 6; i += 1) {
     const skeleton = document.createElement('div');
     skeleton.className = 'skeleton';
-    skeletonGrid.appendChild(skeleton);
+    refs.skeletonGrid.appendChild(skeleton);
   }
 }
 
 function renderProducts(showSkeleton = false) {
+  if (!refs.productGrid || !refs.skeletonGrid) return;
   if (showSkeleton) {
     renderSkeletons();
-    productGrid.innerHTML = '';
+    refs.productGrid.innerHTML = '';
     setTimeout(() => renderProducts(false), 420);
     return;
   }
-  skeletonGrid.classList.add('hidden');
-  productGrid.innerHTML = '';
+  refs.skeletonGrid.classList.add('hidden');
+  refs.productGrid.innerHTML = '';
   const list = products.filter((p) => p.category === state.category && productPassesFilters(p));
   list.forEach((product) => {
     const card = document.createElement('article');
@@ -245,17 +256,18 @@ function renderProducts(showSkeleton = false) {
       </div>
     `;
     card.querySelector('.btn-primary').addEventListener('click', () => addToCart(product));
-    productGrid.appendChild(card);
+    refs.productGrid.appendChild(card);
   });
 }
 
 function renderActiveFilters() {
-  activeFilters.innerHTML = '';
+  if (!refs.activeFilters) return;
+  refs.activeFilters.innerHTML = '';
   Object.entries(state.filters).forEach(([key, val]) => {
     if (Array.isArray(val)) {
-      val.forEach((v) => activeFilters.appendChild(activeChip(key, v)));
+      val.forEach((v) => refs.activeFilters.appendChild(activeChip(key, v)));
     } else if (typeof val === 'number') {
-      activeFilters.appendChild(activeChip(key, `${val}+`));
+      refs.activeFilters.appendChild(activeChip(key, `${val}+`));
     }
   });
 }
@@ -279,16 +291,18 @@ function activeChip(key, value) {
 }
 
 function openCart() {
-  cartDrawer.classList.add('open');
-  cartBackdrop.classList.add('visible');
+  if (!refs.cartDrawer || !refs.cartBackdrop) return;
+  refs.cartDrawer.classList.add('open');
+  refs.cartBackdrop.classList.add('visible');
 }
 function closeCart() {
-  cartDrawer.classList.remove('open');
-  cartBackdrop.classList.remove('visible');
+  if (!refs.cartDrawer || !refs.cartBackdrop) return;
+  refs.cartDrawer.classList.remove('open');
+  refs.cartBackdrop.classList.remove('visible');
 }
 
-document.getElementById('close-cart').addEventListener('click', closeCart);
-cartBackdrop.addEventListener('click', closeCart);
+document.getElementById('close-cart')?.addEventListener('click', closeCart);
+refs.cartBackdrop?.addEventListener('click', closeCart);
 
 function addToCart(product) {
   const existing = state.cart.find((item) => item.id === product.id);
@@ -302,16 +316,17 @@ function addToCart(product) {
 }
 
 function renderCart() {
-  cartItems.innerHTML = '';
+  if (!refs.cartItems || !refs.cartTotal) return;
+  refs.cartItems.innerHTML = '';
   let subtotal = 0;
   state.cart.forEach((item) => {
     subtotal += item.price * item.qty;
     const row = document.createElement('div');
     row.className = 'cart-item';
     row.innerHTML = `<div><strong>${item.name}</strong><div class="card__meta">${item.qty} × ${formatCurrency(item.price)}</div></div><span>${formatCurrency(item.price * item.qty)}</span>`;
-    cartItems.appendChild(row);
+    refs.cartItems.appendChild(row);
   });
-  cartTotal.textContent = formatCurrency(subtotal);
+  refs.cartTotal.textContent = formatCurrency(subtotal);
 }
 
 function builderCompatibility(product, stepKey) {
@@ -345,7 +360,8 @@ function builderOptionsFor(stepKey) {
 }
 
 function renderBuilder() {
-  builderStepsContainer.innerHTML = '';
+  if (!refs.builderStepsContainer) return;
+  refs.builderStepsContainer.innerHTML = '';
   builderSteps.forEach((step) => {
     const stepEl = document.createElement('div');
     stepEl.className = 'builder-step';
@@ -385,7 +401,7 @@ function renderBuilder() {
 
     stepEl.appendChild(header);
     stepEl.appendChild(optionsWrap);
-    builderStepsContainer.appendChild(stepEl);
+    refs.builderStepsContainer.appendChild(stepEl);
   });
 
   updateProgress();
@@ -393,49 +409,60 @@ function renderBuilder() {
 }
 
 function updateProgress() {
+  if (!refs.progressCount || !refs.progressBar || !refs.progressText) return;
   const total = builderSteps.length;
   const completed = Object.keys(state.builderSelections).length;
-  progressCount.textContent = `${completed}/${total}`;
-  progressBar.style.width = `${(completed / total) * 100}%`;
+  refs.progressCount.textContent = `${completed}/${total}`;
+  refs.progressBar.style.width = `${(completed / total) * 100}%`;
   const missing = builderSteps.find((s) => !state.builderSelections[s.key]);
-  progressText.textContent = missing ? `Next: ${missing.label}` : 'Build complete';
+  refs.progressText.textContent = missing ? `Next: ${missing.label}` : 'Build complete';
 }
 
 function updateTotals() {
+  if (!refs.totals) return;
   const sum = Object.values(state.builderSelections).reduce((acc, item) => acc + (item?.price || 0), 0);
-  totals.innerHTML = '';
+  refs.totals.innerHTML = '';
   Object.values(state.builderSelections).forEach((item) => {
     const row = document.createElement('div');
     row.textContent = `${item.name} — ${formatCurrency(item.price)}`;
-    totals.appendChild(row);
+    refs.totals.appendChild(row);
   });
   const totalRow = document.createElement('div');
   totalRow.innerHTML = `<strong>Total: ${formatCurrency(sum)}</strong>`;
-  totals.appendChild(totalRow);
+  refs.totals.appendChild(totalRow);
 }
 
-addBuildBtn.addEventListener('click', () => {
-  const requiredMissing = builderSteps.filter((s) => s.required && !state.builderSelections[s.key]);
-  if (requiredMissing.length) {
-    alert(`Missing required parts: ${requiredMissing.map((s) => s.label).join(', ')}`);
-    return;
-  }
-  Object.values(state.builderSelections).forEach((item) => addToCart(item));
-  openCart();
-});
+function initBuilder() {
+  if (!refs.builderSection) return;
+  renderBuilder();
+  refs.addBuildBtn?.addEventListener('click', () => {
+    const requiredMissing = builderSteps.filter((s) => s.required && !state.builderSelections[s.key]);
+    if (requiredMissing.length) {
+      alert(`Missing required parts: ${requiredMissing.map((s) => s.label).join(', ')}`);
+      return;
+    }
+    Object.values(state.builderSelections).forEach((item) => addToCart(item));
+    openCart();
+  });
+}
 
 function initScrollLinks() {
-  document.getElementById('cta-shop').addEventListener('click', () => {
-    document.getElementById('shop-section').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('cta-shop')?.addEventListener('click', () => {
+    document.getElementById('shop-section')?.scrollIntoView({ behavior: 'smooth' });
   });
-  document.getElementById('cta-builder').addEventListener('click', () => {
-    document.getElementById('builder-section').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('cta-builder')?.addEventListener('click', () => {
+    document.getElementById('builder-section')?.scrollIntoView({ behavior: 'smooth' });
   });
 }
 
-initCategorySelect();
-renderFilters();
-renderActiveFilters();
-renderProducts();
-renderBuilder();
+function initCatalog() {
+  if (!refs.shopSection) return;
+  initCategorySelect();
+  renderFilters();
+  renderActiveFilters();
+  renderProducts(true);
+}
+
+initCatalog();
+initBuilder();
 initScrollLinks();
