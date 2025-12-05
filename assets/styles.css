@@ -47,6 +47,46 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
   overflow: hidden;
 }
 
+.hero--xl { border-radius: 0 0 26px 26px; box-shadow: 0 20px 80px rgba(0,0,0,0.6); }
+.hero__scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.08) 50%);
+  background-size: 4px 4px;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: scan 6s linear infinite;
+}
+.hero__content[data-animate], .hero__visual[data-animate] { opacity: 0; transform: translateY(20px); }
+
+.pulse-ribbon {
+  margin-top: 22px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.pulse-ribbon div {
+  background: rgba(138,255,0,0.08);
+  border: 1px solid rgba(138,255,0,0.25);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-family: var(--mono);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.grid-info { display: grid; gap: 10px; margin-top: 16px; }
+.grid-info__card {
+  background: rgba(0,198,255,0.08);
+  border: 1px solid rgba(0,198,255,0.4);
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-family: var(--mono);
+  box-shadow: 0 12px 30px rgba(0,198,255,0.12);
+}
+
+.glow-card__footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+
 .hero__content { max-width: 900px; position: relative; z-index: 2; }
 
 .hero__glow {
@@ -164,6 +204,53 @@ main { padding: 32px 24px 80px; max-width: 1280px; margin: 0 auto; }
   transition: opacity 0.2s ease;
 }
 .product-card:hover .card__hover-specs { opacity: 1; }
+
+.ticker {
+  margin: 18px auto 10px;
+  max-width: 1280px;
+  padding: 0 24px;
+}
+.ticker__rail {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  animation: marquee 26s linear infinite;
+}
+.ticker__item {
+  padding: 10px 18px;
+  white-space: nowrap;
+  font-family: var(--mono);
+  color: var(--muted);
+}
+
+.showcase { margin-top: 60px; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+.showcase__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px; }
+.neo-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.neo-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(0,198,255,0.12), rgba(245,197,24,0.06)); opacity: 0; transition: opacity 0.2s ease; }
+.neo-card:hover::after { opacity: 1; }
+.neo-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.pill-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+
+.matrix { margin-top: 60px; display: grid; gap: 20px; grid-template-columns: 1.3fr 1fr; align-items: start; }
+.matrix__items { display: grid; gap: 12px; }
+.matrix__item { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+.feature-list--dense li { margin-bottom: 6px; }
+
+.cta { margin: 70px auto 10px; padding: 26px; border-radius: 16px; background: linear-gradient(120deg, rgba(138,255,0,0.16), rgba(0,198,255,0.1)); border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.cta__actions { display: flex; gap: 10px; }
+
+.floating { animation: float 6s ease-in-out infinite; animation-delay: var(--delay, 0ms); }
+
+[data-animate].is-visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
+
+@keyframes scan { to { transform: translateY(-4px); } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 12px 30px rgba(138,255,0,0.1); border-color: rgba(138,255,0,0.25);} 50% { box-shadow: 0 16px 40px rgba(0,198,255,0.2); border-color: rgba(0,198,255,0.45);} }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 .skeleton { height: 180px; background: linear-gradient(90deg, #1b1d22, #20232a, #1b1d22); border-radius: 14px; animation: shimmer 1.4s infinite; }

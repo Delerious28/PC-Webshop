@@ -463,6 +463,24 @@ function initCatalog() {
   renderProducts(true);
 }
 
+function initAnimations() {
+  const animated = document.querySelectorAll('[data-animate]');
+  if (!animated.length) return;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  animated.forEach((node) => observer.observe(node));
+}
+
 initCatalog();
 initBuilder();
 initScrollLinks();
+initAnimations();

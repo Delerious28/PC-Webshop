@@ -23,7 +23,8 @@
 
   <main>
     <section class="hero hero--xl">
-      <div class="hero__content">
+      <div class="hero__scanlines"></div>
+      <div class="hero__content" data-animate>
         <p class="eyebrow">Dark-mode gaming gear</p>
         <h1>Assemble your droomrig</h1>
         <p class="lede">Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.</p>
@@ -36,8 +37,14 @@
           <span>Instant filters</span>
           <span>Sticky prijsbalk</span>
         </div>
+        <div class="pulse-ribbon">
+          <div>Ultra-lage input lag</div>
+          <div>Direct voorraadstatus</div>
+          <div>Real-time prijs tracker</div>
+          <div>Tweakers-waardige specs</div>
+        </div>
       </div>
-      <div class="hero__visual">
+      <div class="hero__visual" data-animate>
         <div class="glow-card">
           <p class="eyebrow">Nieuw</p>
           <h3>4K Gaming ready</h3>
@@ -51,7 +58,26 @@
             <span class="price">€ 3.299</span>
             <a class="btn btn-primary" href="builder.html">Bekijk build</a>
           </div>
+          <div class="glow-card__footer">
+            <span class="badge badge--success">Compatible</span>
+            <span class="mono">Score: 4K Ultra 144Hz</span>
+          </div>
         </div>
+        <div class="grid-info">
+          <div class="grid-info__card floating" style="--delay:150ms">VRAM sweet spot: 16-24GB voor 4K</div>
+          <div class="grid-info__card floating" style="--delay:300ms">PSU advies: 1000W+ bij 4090 builds</div>
+          <div class="grid-info__card floating" style="--delay:450ms">Latency: DDR5-6000 CL30 hits the mark</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="trending updates">
+      <div class="ticker__rail">
+        <div class="ticker__item">🔥 7900 XTX prijsdrop • €999 • Levertijd: vandaag verzonden</div>
+        <div class="ticker__item">⚡ DDR5-6400 CL32 op voorraad • Pretested XMP</div>
+        <div class="ticker__item">🛰️ WiFi 7 moederborden binnen • PCIe 5.0 ready</div>
+        <div class="ticker__item">🎯 Builder tip: houd 1.5x TDP marge voor PSU</div>
+        <div class="ticker__item">🟢 Directe compat check: AM5 + DDR5 only</div>
       </div>
     </section>
 
@@ -104,6 +130,100 @@
           <li>Progressbar en sticky prijsbalk</li>
         </ul>
         <a class="btn btn-primary" href="builder.html">Bouw een rig</a>
+      </div>
+    </section>
+
+    <section class="showcase" data-animate>
+      <div>
+        <p class="eyebrow">Voor Tweakers</p>
+        <h2>Deep-dive kaarten & deals</h2>
+        <p class="lede">Benchmarks, hover specs, skeleton loaders en filterchips die blijven staan terwijl je doorscrolt.</p>
+      </div>
+      <div class="showcase__grid">
+        <article class="neo-card">
+          <div class="neo-card__header">
+            <span class="badge badge--success">Nieuw</span>
+            <span class="mono">GPU refresh</span>
+          </div>
+          <h3>Raytracing vault</h3>
+          <p class="lede">RTX 4090, 4080 Super en RX 7900 XTX vergeleken op 4K Ultra.</p>
+          <div class="pill-row">
+            <span class="chip">FG/RT on</span>
+            <span class="chip">DLSS 3</span>
+            <span class="chip">Frame gen</span>
+          </div>
+          <a class="btn btn-primary" href="gpus.html">Open GPU pagina</a>
+        </article>
+        <article class="neo-card">
+          <div class="neo-card__header">
+            <span class="badge">Builder</span>
+            <span class="mono">Live checks</span>
+          </div>
+          <h3>Compat matrix</h3>
+          <p class="lede">Socket + RAM matching met rood-groen feedback en wattage calculators.</p>
+          <div class="pill-row">
+            <span class="chip">LGA1700</span>
+            <span class="chip">AM5</span>
+            <span class="chip">DDR5</span>
+          </div>
+          <a class="btn btn-primary" href="builder.html">Start builder</a>
+        </article>
+        <article class="neo-card">
+          <div class="neo-card__header">
+            <span class="badge badge--warn">Hot</span>
+            <span class="mono">Launchpad</span>
+          </div>
+          <h3>Live deals</h3>
+          <p class="lede">Flash sales met sticky prijsbalk en fly-out cart voor directe aankoop.</p>
+          <div class="pill-row">
+            <span class="chip">-15% bundles</span>
+            <span class="chip">RGB ready</span>
+            <span class="chip">Next-day</span>
+          </div>
+          <a class="btn btn-primary" href="catalog.html">Bekijk shop</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="matrix" data-animate>
+      <div class="matrix__col">
+        <p class="eyebrow">PC Builder story</p>
+        <h2>Stap-voor-stap, zonder frictie</h2>
+        <ul class="feature-list feature-list--dense">
+          <li>Progress bar + build score met gamification badges</li>
+          <li>Hover specs voor GPU/CPU klok en VRAM</li>
+          <li>PSU wattage aanbeveling met 1.5x headroom</li>
+          <li>Cart fly-out met compat-check badges</li>
+        </ul>
+      </div>
+      <div class="matrix__items">
+        <div class="matrix__item floating" style="--delay:200ms">
+          <div class="mono">Builder flow</div>
+          <h4>CPU → GPU → Mobo → RAM</h4>
+          <p class="lede">Alleen compatibele opties blijven klikbaar, de rest wordt gede-emphasized.</p>
+        </div>
+        <div class="matrix__item floating" style="--delay:400ms">
+          <div class="mono">Clearance</div>
+          <h4>GPU lengte vs case</h4>
+          <p class="lede">We blokkeren cases die jouw gekozen kaart niet passen.</p>
+        </div>
+        <div class="matrix__item floating" style="--delay:600ms">
+          <div class="mono">Thermals</div>
+          <h4>Cooling + noise</h4>
+          <p class="lede">AIO vs air, met badges voor silent of RGB. Skeleton loaders voor snelle laadtijd.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" data-animate>
+      <div>
+        <p class="eyebrow">Ready</p>
+        <h2>Open de catalogus of spring direct de builder in</h2>
+        <p class="lede">Alles blijft dark-mode, met neon accenten, hover specs en directe filterrespons. Meer flair, minder klikken.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn-primary" href="catalog.html">Catalogus</a>
+        <a class="btn btn-ghost" href="builder.html">Builder</a>
       </div>
     </section>
   </main>
