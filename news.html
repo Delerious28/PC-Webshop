@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop • Tech nieuws</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header site-header--mega">
+    <div class="logo">PC-Webshop</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a href="forms.html">Forums</a>
+      <a class="pill" href="builder.html">PC Builder</a>
+    </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek nieuws, deals, benchmarks" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-cart aria-label="Winkelmand">
+        🛒
+        <span class="badge badge--pill" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">👤</button>
+    </div>
+  </header>
+  <div class="header-ribbon">
+    <span class="chip">Tweakers-waardig</span>
+    <span class="chip">Benchmarks</span>
+    <span class="chip">Account voor reacties/kopen</span>
+  </div>
+
+  <header class="hero hero--slim">
+    <div class="hero__content">
+      <p class="eyebrow">Nieuws & reviews</p>
+      <h1>Launches, lekken en Pricewatch+ deals</h1>
+      <p class="lede">Neon scanlines, sticky tickers en kritische reviews. Reageren? Log in. Lezen blijft gratis.</p>
+      <div class="hero__actions">
+        <button class="btn btn-primary" data-requires-auth="comment">Reageer</button>
+        <a class="btn btn-ghost" href="catalog.html">Bekijk deals</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="news-rail" data-animate>
+      <article class="news-card">
+        <div class="news-card__meta"><span class="badge">Review</span><span class="mono">GPU</span></div>
+        <h3>RTX 4080 Super vs RX 7900 XTX</h3>
+        <p class="lede">Raytracing, raster en frame gen getest op 4K. PSU advies: 850W+.</p>
+        <div class="tag-row"><span class="chip">4K Ultra</span><span class="chip">Frame gen</span><span class="chip">Wattage</span></div>
+        <button class="btn btn-ghost" data-requires-auth="comment">Reageer</button>
+      </article>
+      <article class="news-card">
+        <div class="news-card__meta"><span class="badge badge--success">Deal</span><span class="mono">-12%</span></div>
+        <h3>DDR5-6400 CL32 prijsklopper</h3>
+        <p class="lede">Onder €150 voor 32GB kits. Combineer met B650E voor sweet spot builds.</p>
+        <div class="tag-row"><span class="chip">DDR5</span><span class="chip">CL32</span><span class="chip">Bundle</span></div>
+        <a class="btn btn-primary" href="catalog.html">Shop deal</a>
+      </article>
+      <article class="news-card">
+        <div class="news-card__meta"><span class="badge badge--warn">Alert</span><span class="mono">PSU</span></div>
+        <h3>ATX 3.1 kabel update</h3>
+        <p class="lede">Nieuwe 12V-2x6 connectoren getest met 500W kaarten. Builder past wattage aan.</p>
+        <div class="tag-row"><span class="chip">ATX 3.1</span><span class="chip">12V-2x6</span><span class="chip">Safety</span></div>
+        <button class="btn btn-ghost" data-requires-auth="comment">Discussieer</button>
+      </article>
+    </section>
+
+    <section class="ticker" aria-label="trending updates">
+      <div class="ticker__rail">
+        <div class="ticker__item">🔥 RDNA4 rumor: 8900 XT 20GB • focus op efficiency</div>
+        <div class="ticker__item">⚡ Zen 5 samples gespot • LGA1851 sokkel bevestigd?</div>
+        <div class="ticker__item">🛰️ WiFi 7 routers in prijsdrop • Multi-Gig ready</div>
+        <div class="ticker__item">🎯 Builder tip: 1.5x TDP marge voor PSU blijft key</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-overlay__panel">
+      <div class="search-overlay__header">
+        <h3>Zoek hardware, nieuws of forms</h3>
+        <button class="icon-btn" id="close-search" aria-label="Sluiten">×</button>
+      </div>
+      <input id="overlay-search" type="search" placeholder="Typ bv. 4080 Super, DDR5, ATX 3.1" />
+      <div id="search-results" class="search-results"></div>
+      <div class="search-trending">
+        <span class="chip">Pricewatch</span>
+        <span class="chip">Launch</span>
+        <span class="chip">Benchmarks</span>
+        <span class="chip">Deals</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="auth-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Account nodig voor reacties of kopen</h3>
+        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+      </div>
+      <p class="lede">Email, gebruikersnaam en wachtwoord zijn genoeg om mee te praten en af te rekenen.</p>
+      <form id="auth-form" class="stack">
+        <label>Email<input type="email" name="email" required placeholder="you@example.com" /></label>
+        <label>Gebruikersnaam<input type="text" name="username" required placeholder="Handle" /></label>
+        <label>Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+        <button class="btn btn-primary" type="submit">Log in / Account</button>
+      </form>
+      <p class="mono" id="auth-requirement"></p>
+    </div>
+  </div>
+  <div class="modal" id="profile-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Profiel</h3>
+        <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
+      </div>
+      <div class="profile-inline" id="profile-inline">
+        <div class="avatar" id="profile-avatar">👤</div>
+        <div>
+          <div class="mono" id="profile-name">Gast</div>
+          <div class="mono" id="profile-email">Geen login</div>
+        </div>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn-primary" href="profile.html">Volledige profielpagina</a>
+        <button class="btn btn-ghost" data-close-profile>Sluit</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+
+  <footer class="footer">
+    <div>PC-Webshop • Dark-mode gear store</div>
+    <div class="tag-row">
+      <span class="chip">Nieuws</span>
+      <span class="chip">Reviews</span>
+      <span class="chip">Deals</span>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>
