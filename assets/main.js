@@ -28,6 +28,18 @@ const products = [
   { id: 'cooler-air', name: 'Noctua NH-D15', category: 'Cooling', brand: 'Noctua', price: 109, type: 'Air', size: 'Dual tower', topSpecs: ['Air cooling', 'Silent', 'Dual tower'], badges: ['quiet'] },
 ];
 
+const newsItems = [
+  { id: 'news-5090', name: 'RTX 5090 leaks', type: 'news', href: 'news.html', tags: ['GPU', 'leak', 'GDDR7'] },
+  { id: 'news-ddr5', name: 'DDR5-6400 CL32 deals', type: 'news', href: 'news.html', tags: ['RAM', 'deal'] },
+  { id: 'news-psu', name: 'ATX 3.1 cable updates', type: 'news', href: 'news.html', tags: ['PSU', 'safety'] },
+];
+
+const forumThreads = [
+  { id: 'forum-silent', name: 'Silent airflow megathread', type: 'forum', href: 'forms.html', tags: ['silence', 'fans'] },
+  { id: 'forum-4k', name: '4K build met 7800X3D', type: 'forum', href: 'forms.html', tags: ['AM5', '4K'] },
+  { id: 'forum-clearance', name: 'GPU clearance twijfel', type: 'forum', href: 'forms.html', tags: ['clearance', 'cases'] },
+];
+
 const filterConfig = {
   GPU: [
     { key: 'chipset', label: 'Chipset', type: 'multi', options: ['RTX 4090', 'RTX 4080', 'RX 7900 XTX'] },
@@ -85,6 +97,7 @@ const state = {
   filters: {},
   cart: [],
   builderSelections: {},
+  user: null,
 };
 
 const refs = {
@@ -105,10 +118,47 @@ const refs = {
   cartBackdrop: document.getElementById('cart-backdrop'),
   cartItems: document.getElementById('cart-items'),
   cartTotal: document.getElementById('cart-total'),
+  cartCount: document.getElementById('cart-count'),
+  navSearch: document.getElementById('nav-search'),
+  navSearchBtn: document.getElementById('nav-search-btn'),
+  overlaySearch: document.getElementById('overlay-search'),
+  searchOverlay: document.getElementById('search-overlay'),
+  searchResults: document.getElementById('search-results'),
+  closeSearch: document.getElementById('close-search'),
+  authModal: document.getElementById('auth-modal'),
+  profileModal: document.getElementById('profile-modal'),
+  modalBackdrop: document.getElementById('modal-backdrop'),
+  authForm: document.getElementById('auth-form'),
+  authRequirement: document.getElementById('auth-requirement'),
+  profileName: document.getElementById('profile-name'),
+  profileEmail: document.getElementById('profile-email'),
+  profileAvatar: document.getElementById('profile-avatar'),
+  profilePageName: document.getElementById('profile-page-name'),
+  profilePageEmail: document.getElementById('profile-page-email'),
+  profilePageAvatar: document.getElementById('profile-page-avatar'),
+  profileInline: document.getElementById('profile-inline'),
+  profileForm: document.getElementById('profile-form'),
 };
 
 function formatCurrency(amount) {
   return `$${amount.toFixed(0)}`;
+}
+
+function loadUser() {
+  const stored = localStorage.getItem('pcwebshop_user');
+  if (stored) {
+    try {
+      state.user = JSON.parse(stored);
+    } catch (e) {
+      state.user = null;
+    }
+  }
+}
+
+function persistUser() {
+  if (state.user) {
+    localStorage.setItem('pcwebshop_user', JSON.stringify(state.user));
+  }
 }
 
 function initCategorySelect() {
@@ -327,6 +377,93 @@ function renderCart() {
     refs.cartItems.appendChild(row);
   });
   refs.cartTotal.textContent = formatCurrency(subtotal);
+  if (refs.cartCount) {
+    const count = state.cart.reduce((acc, i) => acc + i.qty, 0);
+    refs.cartCount.textContent = count;
+  }
+}
+
+function openSearch() {
+  if (!refs.searchOverlay) return;
+  refs.searchOverlay.classList.add('open');
+  refs.modalBackdrop?.classList.add('visible');
+  refs.overlaySearch?.focus();
+}
+
+function closeSearch() {
+  if (!refs.searchOverlay) return;
+  refs.searchOverlay.classList.remove('open');
+  refs.modalBackdrop?.classList.remove('visible');
+}
+
+function renderSearchResults(results = []) {
+  if (!refs.searchResults) return;
+  refs.searchResults.innerHTML = '';
+  if (!results.length) {
+    refs.searchResults.innerHTML = '<p class="mono">Geen resultaten</p>';
+    return;
+  }
+  results.slice(0, 6).forEach((item) => {
+    const row = document.createElement('a');
+    row.className = 'search-result';
+    row.href = item.href;
+    row.innerHTML = `<span class="badge">${item.type}</span><div><strong>${item.name}</strong><div class="mono">${item.tags.join(', ')}</div></div>`;
+    refs.searchResults.appendChild(row);
+  });
+}
+
+function performSearch(term) {
+  if (!term) {
+    renderSearchResults([]);
+    return;
+  }
+  const q = term.toLowerCase();
+  const index = [
+    ...products.map((p) => ({ id: p.id, name: p.name, type: p.category, href: 'catalog.html', tags: p.topSpecs || [] })),
+    ...newsItems,
+    ...forumThreads,
+  ];
+  const results = index.filter((item) => item.name.toLowerCase().includes(q) || item.tags.some((t) => `${t}`.toLowerCase().includes(q)));
+  renderSearchResults(results);
+}
+
+function openModal(modal) {
+  if (!modal) return;
+  modal.classList.add('open');
+  refs.modalBackdrop?.classList.add('visible');
+}
+
+function closeModals() {
+  refs.modalBackdrop?.classList.remove('visible');
+  refs.authModal?.classList.remove('open');
+  refs.profileModal?.classList.remove('open');
+  closeSearch();
+}
+
+function requireAuth(reason = 'deze actie') {
+  if (state.user) return true;
+  if (refs.authRequirement) {
+    refs.authRequirement.textContent = `Login vereist voor ${reason}. Alleen email, gebruikersnaam en wachtwoord.`;
+  }
+  openModal(refs.authModal);
+  return false;
+}
+
+function updateUserUI() {
+  const avatar = state.user?.avatar || '👤';
+  if (refs.profileName) refs.profileName.textContent = state.user?.username || 'Gast';
+  if (refs.profileEmail) refs.profileEmail.textContent = state.user?.email || 'Geen login';
+  if (refs.profileAvatar) refs.profileAvatar.textContent = avatar;
+  if (refs.profileInline && state.user?.avatar?.startsWith('http')) {
+    refs.profileInline.style.backgroundImage = `url(${state.user.avatar})`;
+  }
+  if (refs.profilePageName) refs.profilePageName.textContent = state.user?.username || 'Gast';
+  if (refs.profilePageEmail) refs.profilePageEmail.textContent = state.user?.email || 'Nog niet ingelogd';
+  if (refs.profilePageAvatar) refs.profilePageAvatar.textContent = avatar;
+  if (refs.profileForm && state.user) {
+    refs.profileForm.username.value = state.user.username;
+    if (state.user.avatar) refs.profileForm.avatar.value = state.user.avatar;
+  }
 }
 
 function builderCompatibility(product, stepKey) {
@@ -480,7 +617,73 @@ function initAnimations() {
   animated.forEach((node) => observer.observe(node));
 }
 
+function initAuth() {
+  loadUser();
+  updateUserUI();
+  document.querySelectorAll('[data-requires-auth]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      if (!requireAuth(btn.dataset.requiresAuth)) {
+        e.preventDefault();
+      }
+    });
+  });
+  document.querySelectorAll('[data-open-profile]').forEach((btn) => btn.addEventListener('click', () => openModal(refs.profileModal)));
+  document.querySelectorAll('[data-close-profile]').forEach((btn) => btn.addEventListener('click', closeModals));
+  document.querySelectorAll('[data-close-auth]').forEach((btn) => btn.addEventListener('click', closeModals));
+  refs.modalBackdrop?.addEventListener('click', closeModals);
+
+  refs.authForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(refs.authForm);
+    state.user = {
+      email: data.get('email'),
+      username: data.get('username'),
+      avatar: data.get('avatar') || '',
+    };
+    persistUser();
+    updateUserUI();
+    closeModals();
+  });
+
+  refs.profileForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!state.user && !requireAuth('profiel bijwerken')) return;
+    const data = new FormData(refs.profileForm);
+    state.user = {
+      ...(state.user || {}),
+      username: data.get('username'),
+      avatar: data.get('avatar'),
+    };
+    persistUser();
+    updateUserUI();
+    closeModals();
+  });
+
+  document.querySelectorAll('[data-open-cart]').forEach((btn) => btn.addEventListener('click', openCart));
+  const checkoutBtn = document.querySelector('.cart-drawer__footer .btn.btn-primary');
+  checkoutBtn?.addEventListener('click', (e) => {
+    if (!requireAuth('checkout')) {
+      e.preventDefault();
+    }
+  });
+}
+
+function initSearch() {
+  refs.navSearchBtn?.addEventListener('click', () => {
+    openSearch();
+    if (refs.overlaySearch && refs.navSearch) {
+      refs.overlaySearch.value = refs.navSearch.value;
+      performSearch(refs.overlaySearch.value);
+    }
+  });
+  refs.navSearch?.addEventListener('focus', openSearch);
+  refs.overlaySearch?.addEventListener('input', (e) => performSearch(e.target.value));
+  refs.closeSearch?.addEventListener('click', closeSearch);
+}
+
 initCatalog();
 initBuilder();
 initScrollLinks();
 initAnimations();
+initAuth();
+initSearch();

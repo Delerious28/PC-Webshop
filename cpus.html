@@ -10,16 +10,32 @@
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body data-default-category="CPU">
-  <header class="site-header">
+  <header class="site-header site-header--mega">
     <div class="logo">PC-Webshop</div>
     <nav class="nav">
-      <a href="catalog.html">Shop</a>
-      <a href="gpus.html">GPU's</a>
-      <a class="active" href="cpus.html">CPU's</a>
-      <a href="ram.html">Geheugen</a>
+      <a href="index.html">Home</a>
+      <a href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a href="forms.html">Forums</a>
       <a class="pill" href="builder.html">PC Builder</a>
     </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek CPU, benchmark, forum" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-cart aria-label="Winkelmand">
+        🛒
+        <span class="badge badge--pill" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">👤</button>
+    </div>
   </header>
+  <div class="header-ribbon">
+    <span class="chip">Socket & core filters</span>
+    <span class="chip">Hover specs</span>
+    <span class="chip">Account voor checkout</span>
+  </div>
 
   <header class="hero hero--slim">
     <div class="hero__content">
@@ -54,6 +70,60 @@
       </section>
     </section>
   </main>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-overlay__panel">
+      <div class="search-overlay__header">
+        <h3>Zoek hardware, nieuws of forms</h3>
+        <button class="icon-btn" id="close-search" aria-label="Sluiten">×</button>
+      </div>
+      <input id="overlay-search" type="search" placeholder="Typ bv. 7800X3D, AM5, undervolt" />
+      <div id="search-results" class="search-results"></div>
+      <div class="search-trending">
+        <span class="chip">AM5</span>
+        <span class="chip">LGA1700</span>
+        <span class="chip">4.0/5.8GHz</span>
+        <span class="chip">E-cores</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="auth-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Account nodig voor aankoop</h3>
+        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+      </div>
+      <p class="lede">Email, gebruikersnaam en wachtwoord vereisen voor checkout of forumreacties.</p>
+      <form id="auth-form" class="stack">
+        <label>Email<input type="email" name="email" required placeholder="you@example.com" /></label>
+        <label>Gebruikersnaam<input type="text" name="username" required placeholder="Handle" /></label>
+        <label>Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+        <button class="btn btn-primary" type="submit">Log in / Account</button>
+      </form>
+      <p class="mono" id="auth-requirement"></p>
+    </div>
+  </div>
+  <div class="modal" id="profile-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Profiel</h3>
+        <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
+      </div>
+      <div class="profile-inline" id="profile-inline">
+        <div class="avatar" id="profile-avatar">👤</div>
+        <div>
+          <div class="mono" id="profile-name">Gast</div>
+          <div class="mono" id="profile-email">Geen login</div>
+        </div>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn-primary" href="profile.html">Volledige profielpagina</a>
+        <button class="btn btn-ghost" data-close-profile>Sluit</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
 
   <div id="cart-drawer" class="cart-drawer">
     <div class="cart-drawer__header">

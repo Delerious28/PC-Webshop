@@ -10,16 +10,35 @@
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body class="home">
-  <header class="site-header">
+  <header class="site-header site-header--mega">
     <div class="logo">PC-Webshop</div>
     <nav class="nav">
-      <a href="catalog.html">Shop</a>
-      <a href="gpus.html">GPU's</a>
-      <a href="cpus.html">CPU's</a>
-      <a href="ram.html">Geheugen</a>
+      <a class="active" href="index.html">Home</a>
+      <a href="news.html">Tech nieuws</a>
+      <a href="catalog.html">Producten</a>
+      <a href="forms.html">Forums</a>
       <a class="pill" href="builder.html">PC Builder</a>
     </nav>
+    <div class="header__actions">
+      <div class="search-inline">
+        <input id="nav-search" type="search" placeholder="Zoek GPU, CPU, forum of builder" aria-label="Site search" />
+        <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
+      </div>
+      <button class="icon-btn" data-open-cart aria-label="Winkelmand">
+        🛒
+        <span class="badge badge--pill" id="cart-count">0</span>
+      </button>
+      <button class="icon-btn" data-open-profile aria-label="Profiel">
+        👤
+      </button>
+    </div>
   </header>
+  <div class="header-ribbon">
+    <span class="chip">Tech nieuws</span>
+    <span class="chip">Community forms</span>
+    <span class="chip">Prijsvergelijker</span>
+    <span class="chip chip--ghost">Account vereist voor aankopen & reacties</span>
+  </div>
 
   <main>
     <section class="hero hero--xl">
@@ -226,7 +245,168 @@
         <a class="btn btn-ghost" href="builder.html">Builder</a>
       </div>
     </section>
+
+    <section class="news-lab" data-animate>
+      <div class="news-lab__intro">
+        <p class="eyebrow">Tech nieuws</p>
+        <h2>Tweakers-achtige stroom van reviews & headlines</h2>
+        <p class="lede">Kies je volgende upgrade met kritische reviews, benchmarks, deals en een neon ticker die continu doorloopt.</p>
+        <div class="pill-row">
+          <span class="chip">Live</span>
+          <span class="chip">Benchmarks</span>
+          <span class="chip">Launch kalender</span>
+          <span class="chip">Pricewatch+</span>
+        </div>
+      </div>
+      <div class="news-lab__grid">
+        <article class="news-card floating" style="--delay:150ms">
+          <div class="news-card__meta">
+            <span class="badge">Review</span>
+            <span class="mono">4K</span>
+          </div>
+          <h3>RTX 5090 leak roundup</h3>
+          <p class="lede">Koelers van 3.5 slots, 600W TDP? We vergelijken geruchten met huidige 4090 builds.</p>
+          <div class="tag-row"><span class="chip">PCIe 5.0</span><span class="chip">GDDR7</span><span class="chip">Power draw</span></div>
+          <a class="btn btn-ghost" href="news.html">Lees meer</a>
+        </article>
+        <article class="news-card floating" style="--delay:300ms">
+          <div class="news-card__meta">
+            <span class="badge badge--success">Deal</span>
+            <span class="mono">-15%</span>
+          </div>
+          <h3>AM5 combo bundles</h3>
+          <p class="lede">Ryzen 7 7800X3D + B650E + DDR5-6000 met extra korting voor builder-klanten.</p>
+          <div class="tag-row"><span class="chip">Socket AM5</span><span class="chip">DDR5</span><span class="chip">WiFi 6E</span></div>
+          <a class="btn btn-ghost" href="catalog.html">Claim bundel</a>
+        </article>
+        <article class="news-card floating" style="--delay:450ms">
+          <div class="news-card__meta">
+            <span class="badge badge--warn">Hot</span>
+            <span class="mono">Forum</span>
+          </div>
+          <h3>Silent build thread</h3>
+          <p class="lede">Gemeenschap test Noctua vs 360 AIO op 7800X3D en deelt 40dBA profielen.</p>
+          <div class="tag-row"><span class="chip">Silence</span><span class="chip">Undervolt</span><span class="chip">Curve optimizer</span></div>
+          <a class="btn btn-ghost" href="forms.html">Ga naar forum</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="community" data-animate>
+      <div class="community__header">
+        <p class="eyebrow">Community & forms</p>
+        <h2>Vraag & antwoord zonder inloggen, posten met account</h2>
+        <p class="lede">Lees builds en reacties vrij. Om te kopen of te posten/commenten heb je enkel email, gebruikersnaam en wachtwoord nodig.</p>
+      </div>
+      <div class="community__grid">
+        <div class="community__card">
+          <div class="mono">Forms</div>
+          <h3>Build feedback</h3>
+          <p>Deel je componentenlijst, krijg direct advies over socket match, wattage headroom en clearance.</p>
+          <button class="btn btn-primary" data-requires-auth="post">Plaats form</button>
+        </div>
+        <div class="community__card">
+          <div class="mono">Reviews</div>
+          <h3>Case gallery</h3>
+          <p>Scroll door airflow metingen en RGB setups. Reageren? Log in en deel je foto.</p>
+          <button class="btn btn-ghost" data-requires-auth="comment">Reageer</button>
+        </div>
+        <div class="community__card">
+          <div class="mono">Builder</div>
+          <h3>Everyone builds</h3>
+          <p>Alle stappen open zonder login. Voeg toe aan winkelwagen? Account verplicht voor checkout.</p>
+          <a class="btn btn-primary" href="builder.html">Open builder</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-banner" data-animate>
+      <div class="profile-banner__content">
+        <p class="eyebrow">Profiel</p>
+        <h2>Pas je gebruikersnaam & avatar aan</h2>
+        <p class="lede">Kies een handle, upload een avatar en sync het naar forum reacties en checkout. Alles blijft in dark-mode.</p>
+        <div class="pill-row">
+          <span class="chip">Email</span>
+          <span class="chip">Gebruikersnaam</span>
+          <span class="chip">Wachtwoord</span>
+        </div>
+        <div class="cta__actions">
+          <a class="btn btn-primary" href="profile.html">Naar profiel</a>
+          <button class="btn btn-ghost" data-open-profile>Open overlay</button>
+        </div>
+      </div>
+      <div class="profile-banner__glass">
+        <div class="neo-card">
+          <div class="neo-card__header">
+            <span class="badge badge--success">Account</span>
+            <span class="mono">Verplicht voor checkout</span>
+          </div>
+          <h3>Winkelmand & reacties</h3>
+          <p class="lede">Koop, post forms of reageer op threads na login. Builder blijft vrij toegankelijk.</p>
+          <div class="tag-row">
+            <span class="chip">Profile sync</span>
+            <span class="chip">Cart lock</span>
+            <span class="chip">Forum handle</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-overlay__panel">
+      <div class="search-overlay__header">
+        <h3>Zoek hardware, nieuws of forms</h3>
+        <button class="icon-btn" id="close-search" aria-label="Sluiten">×</button>
+      </div>
+      <input id="overlay-search" type="search" placeholder="Typ bv. AM5, RTX 4090, silent build" />
+      <div id="search-results" class="search-results"></div>
+      <div class="search-trending">
+        <span class="chip">AM5 build</span>
+        <span class="chip">RTX 4090</span>
+        <span class="chip">Silent case</span>
+        <span class="chip">DDR5-6400</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="auth-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Log in of maak een account</h3>
+        <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
+      </div>
+      <p class="lede">Nodig voor aankopen, forms posten of reageren. Builder en lezen blijven open.</p>
+      <form id="auth-form" class="stack">
+        <label> Email<input type="email" name="email" required placeholder="you@example.com" /></label>
+        <label> Gebruikersnaam<input type="text" name="username" required placeholder="Handle" /></label>
+        <label> Wachtwoord<input type="password" name="password" required placeholder="••••••••" /></label>
+        <button class="btn btn-primary" type="submit">Log in / Account aanmaken</button>
+      </form>
+      <p class="mono" id="auth-requirement"></p>
+    </div>
+  </div>
+  <div class="modal" id="profile-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Profiel & winkelmand</h3>
+        <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
+      </div>
+      <p class="lede">Pas je handle aan of open de volledige profielpagina.</p>
+      <div class="profile-inline" id="profile-inline">
+        <div class="avatar" id="profile-avatar">👤</div>
+        <div>
+          <div class="mono" id="profile-name">Gast</div>
+          <div class="mono" id="profile-email">Geen login</div>
+        </div>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn-primary" href="profile.html">Volledige profielpagina</a>
+        <button class="btn btn-ghost" data-close-profile>Sluit</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
 
   <footer class="footer">
     <div>PC-Webshop • Dark-mode gear store</div>

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PC Webshop • GPU's</title>
+  <title>PC Webshop • Profiel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
-<body data-default-category="GPU">
+<body>
   <header class="site-header site-header--mega">
     <div class="logo">PC-Webshop</div>
     <nav class="nav">
@@ -21,7 +21,7 @@
     </nav>
     <div class="header__actions">
       <div class="search-inline">
-        <input id="nav-search" type="search" placeholder="Zoek GPU, CPU, forum of builder" aria-label="Site search" />
+        <input id="nav-search" type="search" placeholder="Zoek profiel, instellingen" aria-label="Site search" />
         <button id="nav-search-btn" class="icon-btn" aria-label="Zoeken">⌕</button>
       </div>
       <button class="icon-btn" data-open-cart aria-label="Winkelmand">
@@ -32,42 +32,55 @@
     </div>
   </header>
   <div class="header-ribbon">
-    <span class="chip">VRAM & lengte sliders</span>
-    <span class="chip">Hover specs</span>
-    <span class="chip">Account voor checkout</span>
+    <span class="chip">Account nodig voor checkout en reacties</span>
+    <span class="chip">Email + gebruikersnaam + wachtwoord</span>
+    <span class="chip">Avatar upload</span>
   </div>
 
   <header class="hero hero--slim">
     <div class="hero__content">
-      <p class="eyebrow">VRAM • Clock • Lengte</p>
-      <h1>Vind je perfecte GPU</h1>
-      <p class="lede">Filter op chipset, VRAM, lengte en uitgangen. Hover voor specs, instant refresh.</p>
+      <p class="eyebrow">Profiel</p>
+      <h1>Beheer je account</h1>
+      <p class="lede">Pas je gebruikersnaam aan, wissel avatar en zie waar login voor nodig is: aankopen, forms plaatsen of reageren.</p>
     </div>
   </header>
 
   <main>
-    <section class="grid" id="shop-section">
-      <aside class="filters">
-        <div class="filters__header">
-          <h2>Filters</h2>
-          <label class="select-inline">
-            <span>Categorie</span>
-            <select id="category-select"></select>
-          </label>
+    <section class="profile-page" data-animate>
+      <div class="profile-card">
+        <div class="avatar" id="profile-page-avatar">👤</div>
+        <div>
+          <div class="mono" id="profile-page-name">Gast</div>
+          <div class="mono" id="profile-page-email">Nog niet ingelogd</div>
+          <p class="lede">Inloggen is vereist voor checkout of forumreacties. Builder blijft open.</p>
         </div>
-        <div id="filter-groups" class="filter-groups"></div>
-      </aside>
-      <section class="products">
-        <div class="products__header">
-          <div>
-            <p class="eyebrow">GPU filters</p>
-            <h2>Resultaten</h2>
-          </div>
-          <div class="active-filters" id="active-filters"></div>
-        </div>
-        <div id="skeletons" class="skeleton-grid hidden"></div>
-        <div id="product-grid" class="product-grid"></div>
-      </section>
+      </div>
+      <form id="profile-form" class="stack">
+        <label>Gebruikersnaam<input type="text" name="username" required placeholder="Nieuwe gebruikersnaam" /></label>
+        <label>Avatar URL<input type="url" name="avatar" placeholder="https://" /></label>
+        <button class="btn btn-primary" type="submit">Opslaan</button>
+        <p class="mono">Alleen email, gebruikersnaam en wachtwoord zijn nodig voor het account.</p>
+      </form>
+    </section>
+
+    <section class="profile-page__note" data-animate>
+      <div>
+        <p class="eyebrow">Toegang</p>
+        <h2>Wat kan zonder login?</h2>
+        <ul class="feature-list">
+          <li>PC builder doorlopen en compatibiliteit checken</li>
+          <li>Forms en nieuws lezen</li>
+          <li>Hover specs en filters gebruiken</li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow">Wat vraagt een account?</p>
+        <ul class="feature-list">
+          <li>Aankopen afronden via winkelmand</li>
+          <li>Forms posten of reageren</li>
+          <li>Avatar en handle koppelen aan comments</li>
+        </ul>
+      </div>
     </section>
   </main>
 
@@ -77,13 +90,13 @@
         <h3>Zoek hardware, nieuws of forms</h3>
         <button class="icon-btn" id="close-search" aria-label="Sluiten">×</button>
       </div>
-      <input id="overlay-search" type="search" placeholder="Typ bv. RTX 4090, DLSS 3, forum" />
+      <input id="overlay-search" type="search" placeholder="Typ bv. profiel, avatar, handle" />
       <div id="search-results" class="search-results"></div>
       <div class="search-trending">
-        <span class="chip">4090</span>
-        <span class="chip">24GB</span>
-        <span class="chip">HDMI 2.1</span>
-        <span class="chip">PCIe 5.0</span>
+        <span class="chip">Avatar</span>
+        <span class="chip">Gebruikersnaam</span>
+        <span class="chip">Email</span>
+        <span class="chip">Wachtwoord</span>
       </div>
     </div>
   </div>
@@ -91,10 +104,10 @@
   <div class="modal" id="auth-modal">
     <div class="modal__content">
       <div class="modal__header">
-        <h3>Login vereist voor aankoop</h3>
+        <h3>Log in of maak een account</h3>
         <button class="icon-btn" data-close-auth aria-label="Sluiten">×</button>
       </div>
-      <p class="lede">Email, gebruikersnaam en wachtwoord unlocken checkout en forum acties.</p>
+      <p class="lede">Account nodig voor checkout en forumacties. Builder blijft open.</p>
       <form id="auth-form" class="stack">
         <label>Email<input type="email" name="email" required placeholder="you@example.com" /></label>
         <label>Gebruikersnaam<input type="text" name="username" required placeholder="Handle" /></label>
@@ -107,7 +120,7 @@
   <div class="modal" id="profile-modal">
     <div class="modal__content">
       <div class="modal__header">
-        <h3>Profiel</h3>
+        <h3>Profiel overlay</h3>
         <button class="icon-btn" data-close-profile aria-label="Sluiten">×</button>
       </div>
       <div class="profile-inline" id="profile-inline">
@@ -118,25 +131,21 @@
         </div>
       </div>
       <div class="cta__actions">
-        <a class="btn btn-primary" href="profile.html">Volledige profielpagina</a>
+        <button class="btn btn-primary" data-requires-auth="profile">Sync account</button>
         <button class="btn btn-ghost" data-close-profile>Sluit</button>
       </div>
     </div>
   </div>
   <div class="modal-backdrop" id="modal-backdrop"></div>
 
-  <div id="cart-drawer" class="cart-drawer">
-    <div class="cart-drawer__header">
-      <h3>Cart</h3>
-      <button id="close-cart" aria-label="Close cart">×</button>
+  <footer class="footer">
+    <div>PC-Webshop • Dark-mode gear store</div>
+    <div class="tag-row">
+      <span class="chip">Profiel</span>
+      <span class="chip">Avatar</span>
+      <span class="chip">Checkout</span>
     </div>
-    <div id="cart-items" class="cart-items"></div>
-    <div class="cart-drawer__footer">
-      <div class="cart-total"><span>Subtotal</span><span id="cart-total">$0</span></div>
-      <button class="btn btn-primary">Checkout</button>
-    </div>
-  </div>
-  <div id="cart-backdrop" class="cart-backdrop"></div>
+  </footer>
 
   <script type="module" src="assets/main.js"></script>
 </body>

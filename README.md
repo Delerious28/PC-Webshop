@@ -7,6 +7,10 @@ Concept specification for a high-performance PC hardware webshop with a dark, ga
 - Browse dedicated catalog pages:
   - `catalog.html` for all categories
   - `gpus.html`, `cpus.html`, `ram.html` for category-focused faceted filtering with chips, skeleton loading, hover specs, and cart fly-out
+- Community and content pages:
+  - `news.html` for Tweakers-style tech nieuws, deals, and tickers
+  - `forms.html` for forums (lezen zonder login, posten/reageren met account)
+  - `profile.html` to update gebruikersnaam en avatar (account vereist voor checkout en reacties)
 - Use `builder.html` for the compatibility-aware PC builder with socket/RAM checks, wattage budgeting, GPU clearance validation, progress, and sticky totals.
 - Serve locally with `python -m http.server 8000` and visit http://localhost:8000.
 
