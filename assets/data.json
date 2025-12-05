@@ -1,0 +1,88 @@
+{
+  "products": [
+    { "id": "cpu-13900k", "name": "Intel Core i9-13900K", "category": "CPU", "brand": "Intel", "price": 589, "socket": "LGA1700", "cores": 24, "threads": 32, "clock": "3.0 / 5.8GHz", "ramType": "DDR5", "tdp": 253, "topSpecs": ["24 cores", "5.8GHz boost", "LGA1700"], "badges": ["flagship"] },
+    { "id": "cpu-7800x3d", "name": "AMD Ryzen 7 7800X3D", "category": "CPU", "brand": "AMD", "price": 449, "socket": "AM5", "cores": 8, "threads": 16, "clock": "4.2 / 5.0GHz", "ramType": "DDR5", "tdp": 120, "topSpecs": ["8 cores", "3D V-Cache", "AM5"], "badges": ["gaming"] },
+    { "id": "cpu-5800x", "name": "AMD Ryzen 7 5800X", "category": "CPU", "brand": "AMD", "price": 329, "socket": "AM4", "cores": 8, "threads": 16, "clock": "3.8 / 4.7GHz", "ramType": "DDR4", "tdp": 105, "topSpecs": ["8 cores", "4.7GHz boost", "AM4"], "badges": ["value"] },
+
+    { "id": "mb-z790", "name": "ASUS ROG Strix Z790-E", "category": "Motherboard", "brand": "ASUS", "price": 429, "socket": "LGA1700", "ramType": "DDR5", "formFactor": "ATX", "chipset": "Z790", "topSpecs": ["LGA1700", "DDR5", "PCIe 5.0"], "badges": ["wifi"] },
+    { "id": "mb-b650", "name": "MSI MPG B650 Carbon", "category": "Motherboard", "brand": "MSI", "price": 299, "socket": "AM5", "ramType": "DDR5", "formFactor": "ATX", "chipset": "B650", "topSpecs": ["AM5", "DDR5", "PCIe 5.0"], "badges": ["wifi"] },
+    { "id": "mb-x570", "name": "Gigabyte X570 Aorus Elite", "category": "Motherboard", "brand": "Gigabyte", "price": 219, "socket": "AM4", "ramType": "DDR4", "formFactor": "ATX", "chipset": "X570", "topSpecs": ["AM4", "DDR4", "PCIe 4.0"], "badges": [] },
+
+    { "id": "gpu-4090", "name": "NVIDIA RTX 4090 Founders", "category": "GPU", "brand": "NVIDIA", "price": 1599, "chipset": "RTX 4090", "vram": 24, "length": 304, "outputs": "HDMI 2.1, 3x DP 1.4a", "tdp": 450, "topSpecs": ["24GB GDDR6X", "304mm length", "HDMI 2.1"], "badges": ["4k", "raytracing"] },
+    { "id": "gpu-4080", "name": "MSI RTX 4080 Gaming X Trio", "category": "GPU", "brand": "MSI", "price": 1199, "chipset": "RTX 4080", "vram": 16, "length": 337, "outputs": "HDMI 2.1, 3x DP 1.4a", "tdp": 320, "topSpecs": ["16GB GDDR6X", "337mm length", "Tri-fan"], "badges": ["4k"] },
+    { "id": "gpu-7900xtx", "name": "Sapphire Nitro+ RX 7900 XTX", "category": "GPU", "brand": "AMD", "price": 999, "chipset": "RX 7900 XTX", "vram": 24, "length": 320, "outputs": "HDMI 2.1, 3x DP 2.1", "tdp": 355, "topSpecs": ["24GB GDDR6", "320mm length", "DP 2.1"], "badges": ["4k"] },
+
+    { "id": "ram-lexar", "name": "Lexar Ares RGB 32GB", "category": "RAM", "brand": "Lexar", "price": 129, "ramType": "DDR5", "speed": 6000, "latency": "CL32", "capacity": 32, "rgb": true, "topSpecs": ["DDR5-6000", "CL32", "RGB"], "badges": [] },
+    { "id": "ram-corsair", "name": "Corsair Vengeance 32GB", "category": "RAM", "brand": "Corsair", "price": 109, "ramType": "DDR4", "speed": 3600, "latency": "CL18", "capacity": 32, "rgb": false, "topSpecs": ["DDR4-3600", "CL18", "Low-profile"], "badges": ["value"] },
+    { "id": "ram-gskill", "name": "G.Skill Trident Z5 RGB 32GB", "category": "RAM", "brand": "G.Skill", "price": 179, "ramType": "DDR5", "speed": 6400, "latency": "CL32", "capacity": 32, "rgb": true, "topSpecs": ["DDR5-6400", "CL32", "RGB"], "badges": ["oc"] },
+
+    { "id": "case-h510", "name": "NZXT H5 Flow RGB", "category": "Case", "brand": "NZXT", "price": 139, "maxGpuLength": 365, "formFactor": "ATX", "topSpecs": ["365mm GPU", "High airflow", "RGB"], "badges": [] },
+    { "id": "case-fractal", "name": "Fractal North", "category": "Case", "brand": "Fractal", "price": 149, "maxGpuLength": 355, "formFactor": "ATX", "topSpecs": ["355mm GPU", "Wood front", "Airflow"], "badges": [] },
+    { "id": "case-lianli", "name": "Lian Li O11D Evo", "category": "Case", "brand": "Lian Li", "price": 169, "maxGpuLength": 422, "formFactor": "ATX", "topSpecs": ["422mm GPU", "Dual-chamber", "Glass"], "badges": ["premium"] },
+
+    { "id": "psu-850", "name": "Seasonic Focus GX-850", "category": "PSU", "brand": "Seasonic", "price": 169, "wattage": 850, "rating": "80+ Gold", "topSpecs": ["850W", "Gold", "Fully modular"], "badges": [] },
+    { "id": "psu-1000", "name": "Corsair RM1000e", "category": "PSU", "brand": "Corsair", "price": 179, "wattage": 1000, "rating": "80+ Gold", "topSpecs": ["1000W", "Gold", "Silent fan"], "badges": [] },
+    { "id": "psu-1200", "name": "ASUS ROG Thor 1200P2", "category": "PSU", "brand": "ASUS", "price": 299, "wattage": 1200, "rating": "80+ Platinum", "topSpecs": ["1200W", "Platinum", "OLED"], "badges": ["premium"] },
+
+    { "id": "storage-980pro", "name": "Samsung 980 Pro 2TB", "category": "Storage", "brand": "Samsung", "price": 189, "type": "NVMe", "speed": "PCIe 4.0", "topSpecs": ["2TB NVMe", "PCIe 4.0", "7000MB/s"], "badges": [] },
+    { "id": "cooler-lc", "name": "NZXT Kraken 360 RGB", "category": "Cooling", "brand": "NZXT", "price": 199, "type": "AIO", "size": "360mm", "topSpecs": ["360mm AIO", "RGB", "Silent"], "badges": [] },
+    { "id": "cooler-air", "name": "Noctua NH-D15", "category": "Cooling", "brand": "Noctua", "price": 109, "type": "Air", "size": "Dual tower", "topSpecs": ["Air cooling", "Silent", "Dual tower"], "badges": ["quiet"] }
+  ],
+  "newsItems": [
+    { "id": "news-5090", "name": "RTX 5090 leaks", "type": "news", "href": "news.html", "tags": ["GPU", "leak", "GDDR7"] },
+    { "id": "news-ddr5", "name": "DDR5-6400 CL32 deals", "type": "news", "href": "news.html", "tags": ["RAM", "deal"] },
+    { "id": "news-psu", "name": "ATX 3.1 cable updates", "type": "news", "href": "news.html", "tags": ["PSU", "safety"] }
+  ],
+  "forumThreads": [
+    { "id": "forum-silent", "name": "Silent airflow megathread", "type": "forum", "href": "forms.html", "tags": ["silence", "fans"] },
+    { "id": "forum-4k", "name": "4K build met 7800X3D", "type": "forum", "href": "forms.html", "tags": ["AM5", "4K"] },
+    { "id": "forum-clearance", "name": "GPU clearance twijfel", "type": "forum", "href": "forms.html", "tags": ["clearance", "cases"] }
+  ],
+  "filterConfig": {
+    "GPU": [
+      { "key": "chipset", "label": "Chipset", "type": "multi", "options": ["RTX 4090", "RTX 4080", "RX 7900 XTX"] },
+      { "key": "vram", "label": "VRAM (GB)", "type": "range", "min": 8, "max": 24, "step": 1 },
+      { "key": "length", "label": "Max length (mm)", "type": "range", "min": 250, "max": 360, "step": 5 },
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["NVIDIA", "MSI", "AMD"] }
+    ],
+    "CPU": [
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["Intel", "AMD"] },
+      { "key": "cores", "label": "Cores", "type": "range", "min": 6, "max": 24, "step": 2 },
+      { "key": "socket", "label": "Socket", "type": "multi", "options": ["LGA1700", "AM5", "AM4"] }
+    ],
+    "Motherboard": [
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["ASUS", "MSI", "Gigabyte"] },
+      { "key": "socket", "label": "Socket", "type": "multi", "options": ["LGA1700", "AM5", "AM4"] },
+      { "key": "ramType", "label": "RAM", "type": "multi", "options": ["DDR4", "DDR5"] }
+    ],
+    "RAM": [
+      { "key": "ramType", "label": "Memory Type", "type": "multi", "options": ["DDR4", "DDR5"] },
+      { "key": "speed", "label": "Speed (MHz)", "type": "range", "min": 3000, "max": 7000, "step": 200 },
+      { "key": "rgb", "label": "RGB", "type": "multi", "options": ["Yes", "No"] }
+    ],
+    "Case": [
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["NZXT", "Fractal", "Lian Li"] },
+      { "key": "maxGpuLength", "label": "GPU length (mm)", "type": "range", "min": 300, "max": 430, "step": 5 }
+    ],
+    "PSU": [
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["Seasonic", "Corsair", "ASUS"] },
+      { "key": "wattage", "label": "Wattage", "type": "range", "min": 650, "max": 1300, "step": 50 }
+    ],
+    "Storage": [
+      { "key": "brand", "label": "Brand", "type": "multi", "options": ["Samsung"] }
+    ],
+    "Cooling": [
+      { "key": "type", "label": "Type", "type": "multi", "options": ["AIO", "Air"] }
+    ]
+  },
+  "builderSteps": [
+    { "key": "CPU", "label": "CPU", "required": true },
+    { "key": "GPU", "label": "GPU", "required": true },
+    { "key": "Motherboard", "label": "Motherboard", "required": true },
+    { "key": "RAM", "label": "Memory", "required": true },
+    { "key": "Storage", "label": "Storage", "required": false },
+    { "key": "Cooling", "label": "Cooling", "required": false },
+    { "key": "Case", "label": "Case", "required": true },
+    { "key": "PSU", "label": "Power Supply", "required": true }
+  ]
+}

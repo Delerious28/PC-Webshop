@@ -82,6 +82,43 @@
         </ul>
       </div>
     </section>
+
+    <section class="profile-page__admin" data-animate>
+      <div class="stack">
+        <p class="eyebrow">Admin beheer</p>
+        <h2>Data gedreven, geen hardcode</h2>
+        <p class="lede">Catalogus, nieuws en forums komen uit <code>assets/data.json</code> plus optionele admin-overrides. Voeg snel onderdelen toe of plak eigen JSON.</p>
+        <p class="mono" id="admin-status" data-tone="neutral">Overrides worden lokaal opgeslagen voor snelle iteraties.</p>
+      </div>
+      <div class="admin-console">
+        <form id="admin-quick-form" class="grid-form">
+          <label>Type
+            <select name="type" required>
+              <option value="product">Product</option>
+              <option value="news">Tech nieuws</option>
+              <option value="forum">Forum topic</option>
+            </select>
+          </label>
+          <label>Unieke ID<input name="id" required placeholder="gpu-4070-super" /></label>
+          <label>Naam<input name="name" required placeholder="Product of titel" /></label>
+          <label>Category<input name="category" placeholder="GPU / CPU / etc" /></label>
+          <label>Brand<input name="brand" placeholder="ASUS, MSI" /></label>
+          <label>Prijs<input type="number" name="price" placeholder="199" /></label>
+          <label>Tags (comma)<input name="tags" placeholder="RTX 5090, leak" /></label>
+          <label>Specs (comma)<input name="specs" placeholder="24GB, HDMI 2.1" /></label>
+          <button class="btn btn-primary" type="submit">Snel toevoegen</button>
+        </form>
+        <div class="stack">
+          <label>JSON overrides
+            <textarea id="admin-json" rows="8" placeholder='{"products": [{"id": "custom", "name": "Admin toegevoegd"}]}'></textarea>
+          </label>
+          <div class="cta__actions">
+            <button class="btn btn-primary" type="button" id="admin-save">Bewaar overrides</button>
+            <button class="btn btn-ghost" type="button" id="admin-reset">Reset overrides</button>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div class="search-overlay" id="search-overlay">
