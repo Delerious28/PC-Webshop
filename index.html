@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Webshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="home">
+  <header class="site-header">
+    <div class="logo">PC-Webshop</div>
+    <nav class="nav">
+      <a href="catalog.html">Shop</a>
+      <a href="gpus.html">GPU's</a>
+      <a href="cpus.html">CPU's</a>
+      <a href="ram.html">Geheugen</a>
+      <a class="pill" href="builder.html">PC Builder</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero hero--xl">
+      <div class="hero__content">
+        <p class="eyebrow">Dark-mode gaming gear</p>
+        <h1>Assemble your droomrig</h1>
+        <p class="lede">Cyberpunk accenten, monospaced specs, en directe filters. Start met de builder of duik een categorie in.</p>
+        <div class="hero__actions">
+          <a class="btn btn-primary" href="builder.html">Start PC builder</a>
+          <a class="btn btn-ghost" href="catalog.html">Shop hardware</a>
+        </div>
+        <div class="hero__meta">
+          <span>Live compatibiliteit</span>
+          <span>Instant filters</span>
+          <span>Sticky prijsbalk</span>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="glow-card">
+          <p class="eyebrow">Nieuw</p>
+          <h3>4K Gaming ready</h3>
+          <p class="lede">RTX 4090 + 7800X3D build</p>
+          <div class="tag-row">
+            <span class="chip">GPU 450W</span>
+            <span class="chip">DDR5</span>
+            <span class="chip">PCIe 5.0</span>
+          </div>
+          <div class="price-row">
+            <span class="price">€ 3.299</span>
+            <a class="btn btn-primary" href="builder.html">Bekijk build</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-grid">
+      <article class="panel">
+        <p class="eyebrow">Categorie spotlight</p>
+        <h2>GPU's</h2>
+        <p class="lede">Chipset, VRAM, lengte en uitgangen in één klik. Hover voor specs, instant refresh.</p>
+        <a class="btn btn-primary" href="gpus.html">Bekijk GPU's</a>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Compatibiliteit</p>
+        <h2>Moederborden</h2>
+        <p class="lede">Socket matching, DDR4/DDR5 filter, PCIe generaties en wifi badges.</p>
+        <a class="btn btn-primary" href="catalog.html?category=Motherboard">Check borden</a>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Upgrade</p>
+        <h2>Geheugen</h2>
+        <p class="lede">DDR4 of DDR5, snelheden, latency en RGB toggle met actieve chips.</p>
+        <a class="btn btn-primary" href="ram.html">Shop RAM</a>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Uniek</p>
+        <h2>PC Builder</h2>
+        <p class="lede">Stapsgewijs, live checks voor socket, wattage en GPU clearance. Sticky totaalprijs.</p>
+        <a class="btn btn-primary" href="builder.html">Start nu</a>
+      </article>
+    </section>
+
+    <section class="split">
+      <div>
+        <p class="eyebrow">Faceted search</p>
+        <h2>Filters gemaakt voor hardware nerds</h2>
+        <ul class="feature-list">
+          <li>Multi-select voor merken en sockets</li>
+          <li>Range sliders voor prijs, VRAM, wattage, kloksnelheid</li>
+          <li>Actieve filter chips boven de resultaten</li>
+          <li>Skeleton loading en hover specs voor snelheid</li>
+        </ul>
+        <a class="btn btn-ghost" href="catalog.html">Ga naar shop</a>
+      </div>
+      <div>
+        <p class="eyebrow">PC Builder</p>
+        <h2>Compatibiliteitslaag in real-time</h2>
+        <ul class="feature-list">
+          <li>Socket + RAM type matching per keuze</li>
+          <li>Wattage kalkulator met 1.5x headroom</li>
+          <li>GPU length clearance per behuizing</li>
+          <li>Progressbar en sticky prijsbalk</li>
+        </ul>
+        <a class="btn btn-primary" href="builder.html">Bouw een rig</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>PC-Webshop • Dark-mode gear store</div>
+    <div class="tag-row">
+      <span class="chip">Cyberpunk geel</span>
+      <span class="chip">Neon blauw</span>
+      <span class="chip">Nvidia groen</span>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>
